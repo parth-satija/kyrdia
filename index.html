@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kyrdia — Rajasthani Sarees, Woven in Sandstone &amp; Gold</title>
+<meta name="description" content="Kyrdia is a luxury house devoted to the Rajasthani saree: Bandhani, Leheriya, Kota Doria, Gota Patti, Block Print, Banarasi, Chanderi and Bagru, handcrafted by master artisans.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 95V45C20 30 35 25 50 5C65 25 80 30 80 45V95Z' fill='%23b8893b'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- Shared SVG definitions -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="cuspArch" clipPathUnits="objectBoundingBox">
+      <path d="M0,1 V0.44 C0,0.33 0.09,0.26 0.23,0.205 C0.34,0.165 0.42,0.11 0.5,0 C0.58,0.11 0.66,0.165 0.77,0.205 C0.91,0.26 1,0.33 1,0.44 V1 Z"/>
+    </clipPath>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0d596"/>
+      <stop offset=".45" stop-color="#b8893b"/>
+      <stop offset="1" stop-color="#8a5f22"/>
+    </linearGradient>
+    <symbol id="lotus" viewBox="0 0 100 60">
+      <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+        <path d="M50 54C40 44 40 22 50 6C60 22 60 44 50 54Z"/>
+        <path d="M50 54C34 50 24 36 22 18C38 22 48 36 50 54Z"/>
+        <path d="M50 54C66 50 76 36 78 18C62 22 52 36 50 54Z"/>
+        <path d="M50 54C30 56 14 46 6 32C24 32 40 40 50 54Z"/>
+        <path d="M50 54C70 56 86 46 94 32C76 32 60 40 50 54Z"/>
+      </g>
+    </symbol>
+    <pattern id="jaali" width="40" height="40" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M20 2L38 20L20 38L2 20Z"/><circle cx="20" cy="20" r="6"/><path d="M20 14V26M14 20H26"/>
+        <circle cx="0" cy="0" r="4"/><circle cx="40" cy="0" r="4"/><circle cx="0" cy="40" r="4"/><circle cx="40" cy="40" r="4"/>
+      </g>
+    </pattern>
+    <pattern id="scallop" width="24" height="14" patternUnits="userSpaceOnUse">
+      <path d="M0 14C0 6 6 0 12 0C18 0 24 6 24 14" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="announce">
+  <span>Complimentary insured shipping across India</span><i class="dot"></i>
+  <span>Handwoven · Artisan signed</span><i class="dot hide-sm"></i>
+  <span class="hide-sm">Free fall &amp; pico with every saree</span>
+</div>
+
+<header class="site-header" id="top">
+  <nav class="nav nav-left" aria-label="Primary">
+    <a href="#collections">Weaves</a>
+    <a href="#sarees">Sarees</a>
+    <a href="#anatomy">The Drape</a>
+  </nav>
+
+  <a href="#top" class="brand" aria-label="Kyrdia home">
+    <svg class="brand-arch" viewBox="0 0 60 70" aria-hidden="true">
+      <path d="M4 68V32C4 22 14 17 22 12C27 9 29 5 30 1C31 5 33 9 38 12C46 17 56 22 56 32V68" fill="none" stroke="url(#goldGrad)" stroke-width="2"/>
+      <path d="M12 68V34C12 27 19 23 25 19C28 17 29.5 14 30 11C30.5 14 32 17 35 19C41 23 48 27 48 34V68" fill="none" stroke="url(#goldGrad)" stroke-width="1"/>
+    </svg>
+    <span class="brand-name">Kyrdia</span>
+    <span class="brand-sub">Sarees of Marwar</span>
+  </a>
+
+  <nav class="nav nav-right" aria-label="Secondary">
+    <a href="#artisans">Weavers</a>
+    <a href="#journal">Journal</a>
+    <button class="cart-btn" id="cartOpen" aria-label="Open cart">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </nav>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#collections">Weaves</a>
+  <a href="#sarees">Sarees</a>
+  <a href="#anatomy">The Drape</a>
+  <a href="#artisans">Weavers</a>
+  <a href="#journal">Journal</a>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <svg width="100%" height="100%"><rect width="100%" height="100%" fill="url(#jaali)" style="color:#b8893b"/></svg>
+  </div>
+
+  <div class="hero-copy reveal">
+    <p class="eyebrow"><svg viewBox="0 0 100 60" class="eyebrow-lotus"><use href="#lotus"/></svg> Six yards of Rajasthan</p>
+    <h1>The saree, <em>woven</em><br>in sandstone &amp; gold</h1>
+    <p class="lead">Kyrdia is devoted to a single garment. Bandhani knotted by hand, Leheriya dyed in desert waves, Kota Doria spun light as air — each saree made by a hereditary artisan and finished with a gold kinara.</p>
+    <div class="hero-cta">
+      <a href="#sarees" class="btn btn-gold">Shop Sarees</a>
+      <a href="#collections" class="btn btn-ghost">Explore Weaves</a>
+    </div>
+    <ul class="hero-stats">
+      <li><strong>8</strong><span>Heritage weaves</span></li>
+      <li><strong>240+</strong><span>Master artisans</span></li>
+      <li><strong>6.3 m</strong><span>Of pure drape</span></li>
+    </ul>
+  </div>
+
+  <div class="hero-arches reveal">
+    <div class="ha ha-l"><div class="rarch"><div id="heroL"></div></div></div>
+    <div class="ha ha-main"><div class="cusp"><div id="heroMain"></div></div></div>
+    <div class="ha ha-r"><div class="rarch"><div id="heroR"></div></div></div>
+    <div class="hero-badge">
+      <svg viewBox="0 0 100 60"><use href="#lotus"/></svg>
+      <span>Handwoven<br>in Rajasthan</span>
+    </div>
+  </div>
+</section>
+
+<section class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Bandhani</span><i>✦</i><span>Leheriya</span><i>✦</i><span>Kota Doria</span><i>✦</i><span>Gota Patti</span><i>✦</i><span>Block Print</span><i>✦</i><span>Banarasi</span><i>✦</i><span>Chanderi</span><i>✦</i><span>Bagru</span><i>✦</i>
+    <span>Bandhani</span><i>✦</i><span>Leheriya</span><i>✦</i><span>Kota Doria</span><i>✦</i><span>Gota Patti</span><i>✦</i><span>Block Print</span><i>✦</i><span>Banarasi</span><i>✦</i><span>Chanderi</span><i>✦</i><span>Bagru</span><i>✦</i>
+  </div>
+</section>
+
+<!-- CATEGORY RAIL -->
+<section class="rail-section" id="collections">
+  <header class="section-head reveal">
+    <span class="deva">साड़ी</span>
+    <p class="eyebrow">The Weaves</p>
+    <h2>Eight doorways into the saree</h2>
+    <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
+  </header>
+
+  <div class="rail" id="rail" aria-label="Saree categories, scroll horizontally"></div>
+
+  <div class="rail-ctrl">
+    <button class="rail-btn" id="railPrev" aria-label="Previous">←</button>
+    <div class="rail-progress"><span id="railThumb"></span></div>
+    <button class="rail-btn" id="railNext" aria-label="Next">→</button>
+  </div>
+</section>
+
+<!-- SAREES -->
+<section class="section section-sand" id="sarees">
+  <header class="section-head reveal">
+    <span class="deva">विशेष</span>
+    <p class="eyebrow">The Edit</p>
+    <h2>Sarees worthy of an heirloom</h2>
+    <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
+  </header>
+  <div class="filters reveal" id="filters"></div>
+  <div class="products" id="products"></div>
+</section>
+
+<!-- ANATOMY -->
+<section class="section" id="anatomy">
+  <header class="section-head reveal">
+    <span class="deva">पल्लू</span>
+    <p class="eyebrow">Anatomy of a Kyrdia saree</p>
+    <h2>Every inch, considered</h2>
+    <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
+  </header>
+  <div class="anatomy">
+    <article class="part reveal"><span class="num">I</span><h3>Pallu</h3><p>The ornate end that crosses the shoulder, where the weaver’s finest work is saved.</p></article>
+    <article class="part reveal" style="--d:.1s"><span class="num">II</span><h3>Kinara</h3><p>The gold-edged border in real zari, defining the line of every drape.</p></article>
+    <article class="part reveal" style="--d:.2s"><span class="num">III</span><h3>Zameen</h3><p>The field of the saree: knotted, dyed, printed or woven, each in its own tradition.</p></article>
+    <article class="part reveal" style="--d:.3s"><span class="num">IV</span><h3>Buta</h3><p>The motifs — peacock, paisley, lotus — repeated by hand across six metres of cloth.</p></article>
+  </div>
+</section>
+
+<!-- HERITAGE -->
+<section class="heritage" id="heritage">
+  <div class="heritage-pattern" aria-hidden="true">
+    <svg width="100%" height="100%"><rect width="100%" height="100%" fill="url(#jaali)" style="color:#e6c883"/></svg>
+  </div>
+  <div class="heritage-inner">
+    <div class="heritage-arches reveal" aria-hidden="true">
+      <div class="h-arch a1"><div id="hArt1"></div></div>
+      <div class="h-arch a2"><div id="hArt2"></div></div>
+      <div class="h-arch a3"><div id="hArt3"></div></div>
+    </div>
+    <div class="heritage-copy reveal">
+      <span class="deva">विरासत</span>
+      <p class="eyebrow light">Our Heritage</p>
+      <h2>A courtly legacy, <em>draped by hand</em></h2>
+      <p>For centuries the royal ateliers of Marwar, Mewar and Amber dressed queens in cloth that took months to complete. Their weavers, dyers and printers passed every technique from parent to child.</p>
+      <p>Kyrdia works directly with those families, paying fairly and documenting every maker, so the saree you wear arrives with the name of the hands that made it.</p>
+      <ul class="pillars">
+        <li><svg viewBox="0 0 100 60"><use href="#lotus"/></svg><div><h4>Hereditary craft</h4><span>Woven, knotted and printed by families practising for generations.</span></div></li>
+        <li><svg viewBox="0 0 100 60"><use href="#lotus"/></svg><div><h4>Pure materials</h4><span>Silk, cotton, real zari and natural dyes, never blends.</span></div></li>
+        <li><svg viewBox="0 0 100 60"><use href="#lotus"/></svg><div><h4>Signed by the maker</h4><span>Each saree carries its artisan’s name and story.</span></div></li>
+      </ul>
+      <a href="#artisans" class="btn btn-gold">Meet the Weavers</a>
+    </div>
+  </div>
+</section>
+
+<!-- ARTISANS -->
+<section class="section" id="artisans">
+  <header class="section-head reveal">
+    <span class="deva">कारीगर</span>
+    <p class="eyebrow">The Hands Behind Kyrdia</p>
+    <h2>Master weavers of Rajasthan</h2>
+    <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
+  </header>
+  <div class="artisans">
+    <article class="artisan reveal">
+      <div class="portrait"><span>S</span></div>
+      <h3>Salma Khatri</h3>
+      <p class="craft">Bandhani · Jodhpur</p>
+      <p>Her family ties up to 12,000 knots in a single saree, each dot lifted by fingernail alone.</p>
+    </article>
+    <article class="artisan reveal" style="--d:.1s">
+      <div class="portrait"><span>K</span></div>
+      <h3>Kailash Ansari</h3>
+      <p class="craft">Kota Doria · Kaithoon</p>
+      <p>A third-generation weaver whose silk-and-cotton khat squares are so airy they float.</p>
+    </article>
+    <article class="artisan reveal" style="--d:.2s">
+      <div class="portrait"><span>R</span></div>
+      <h3>Ramesh Chhipa</h3>
+      <p class="craft">Block Print · Bagru</p>
+      <p>Carves teak blocks and stamps each metre in mud-resist and indigo, one repeat at a time.</p>
+    </article>
+  </div>
+</section>
+
+<section class="quote-band">
+  <div class="quote-arch reveal">
+    <svg class="q-lotus" viewBox="0 0 100 60"><use href="#lotus"/></svg>
+    <blockquote>“Draped in my Kyrdia Bandhani, I felt like I was carrying a small palace — warm, golden and quietly regal.”</blockquote>
+    <cite>— Ananya Rathore, Udaipur</cite>
+  </div>
+</section>
+
+<!-- JOURNAL -->
+<section class="section section-sand" id="journal">
+  <header class="section-head reveal">
+    <span class="deva">पत्रिका</span>
+    <p class="eyebrow">The Journal</p>
+    <h2>Stories from the desert looms</h2>
+    <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
+  </header>
+  <div class="journal">
+    <article class="post reveal">
+      <div class="post-img"><div id="jArt1"></div></div>
+      <span class="tag">Craft</span>
+      <h3>The 12,000 knots of a Bandhani saree</h3>
+      <a href="#journal">Read story →</a>
+    </article>
+    <article class="post reveal" style="--d:.1s">
+      <div class="post-img"><div id="jArt2"></div></div>
+      <span class="tag">Style</span>
+      <h3>Five ways to drape a Leheriya</h3>
+      <a href="#journal">Read story →</a>
+    </article>
+    <article class="post reveal" style="--d:.2s">
+      <div class="post-img"><div id="jArt3"></div></div>
+      <span class="tag">Care</span>
+      <h3>Storing your zari: a guide to keeping gold bright</h3>
+      <a href="#journal">Read story →</a>
+    </article>
+  </div>
+</section>
+
+<section class="newsletter">
+  <div class="news-box reveal">
+    <svg class="news-lotus" viewBox="0 0 100 60"><use href="#lotus"/></svg>
+    <h2>Enter the Maison</h2>
+    <p>Private previews, weaver stories and first access to limited-edition sarees.</p>
+    <form id="newsForm" class="news-form" novalidate>
+      <input type="email" id="newsEmail" placeholder="Your email address" aria-label="Email address" required>
+      <button type="submit" class="btn btn-gold">Subscribe</button>
+    </form>
+    <p class="news-msg" id="newsMsg" role="status"></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-scallop" aria-hidden="true"><svg width="100%" height="14"><rect width="100%" height="14" fill="url(#scallop)" style="color:#b8893b"/></svg></div>
+  <div class="footer-grid">
+    <div class="f-brand">
+      <span class="brand-name">Kyrdia</span>
+      <p>Rajasthani sarees, woven in sandstone and finished in gold.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="#collections">Weaves</a><a href="#sarees">All Sarees</a><a href="#sarees">Bridal</a><a href="#sarees">New Arrivals</a>
+    </div>
+    <div>
+      <h4>Maison</h4>
+      <a href="#heritage">Our Heritage</a><a href="#artisans">Weavers</a><a href="#journal">Journal</a><a href="#top">Contact</a>
+    </div>
+    <div>
+      <h4>Visit</h4>
+      <p>Kyrdia Haveli<br>Clock Tower Lane<br>Jodhpur, Rajasthan 342001</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Kyrdia. All rights reserved.</span>
+    <span>Made with devotion in Rajasthan</span>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Shopping cart" aria-hidden="true">
+  <div class="drawer-head"><h3>Your Bag</h3><button id="cartClose" aria-label="Close cart">✕</button></div>
+  <div class="drawer-body" id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="total"><span>Subtotal</span><strong id="cartTotal">₹0</strong></div>
+    <p class="note">Insured shipping, fall &amp; pico included.</p>
+    <button class="btn btn-gold full" id="checkoutBtn">Proceed to Checkout</button>
+  </div>
+</aside>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
