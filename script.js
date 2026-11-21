@@ -1,5 +1,5 @@
 /* =========================================================
-   KYRDIA — Saree storefront
+   KRIDIA — Saree storefront
    Saree "photographs" are generated as SVG: hung, folded and flowing
    ========================================================= */
 
@@ -257,7 +257,7 @@ $('#jArt3').innerHTML = art(byId(5), 'fold');
 
 /* ---------- Cart ---------- */
 let cart = [];
-try { cart = JSON.parse(localStorage.getItem('kyrdia-saree-cart')) || []; } catch (e) { cart = []; }
+try { cart = JSON.parse(localStorage.getItem('kridia-saree-cart')) || []; } catch (e) { cart = []; }
 cart = cart.filter(i => byId(i.id));
 
 const drawer = $('#drawer'), overlay = $('#overlay');
@@ -267,7 +267,7 @@ $('#cartOpen').addEventListener('click', openCart);
 $('#cartClose').addEventListener('click', closeCart);
 overlay.addEventListener('click', closeCart);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
-const save = () => { try { localStorage.setItem('kyrdia-saree-cart', JSON.stringify(cart)); } catch (e) {} };
+const save = () => { try { localStorage.setItem('kridia-saree-cart', JSON.stringify(cart)); } catch (e) {} };
 
 function renderCart() {
   const wrap = $('#cartItems');
@@ -306,7 +306,7 @@ $('#cartItems').addEventListener('click', e => {
   cart = cart.filter(i => i.qty > 0);
   renderCart();
 });
-$('#checkoutBtn').addEventListener('click', () => toast(cart.length ? 'Checkout coming soon — thank you for choosing Kyrdia' : 'Your bag is empty'));
+$('#checkoutBtn').addEventListener('click', () => toast(cart.length ? 'Checkout coming soon — thank you for choosing Kridia' : 'Your bag is empty'));
 
 let toastTimer;
 function toast(msg) {
