@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="auth.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 95V45C20 30 35 25 50 5C65 25 80 30 80 45V95Z' fill='%23b8893b'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -70,6 +71,10 @@
   <nav class="nav nav-right" aria-label="Secondary">
     <a href="#artisans">Weavers</a>
     <a href="#journal">Journal</a>
+    <button class="account-btn" id="acctOpen" aria-label="Sign in">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 4-6 7.5-6s6.7 2 7.5 6"/></svg>
+      <span class="acct-initial" aria-hidden="true"></span>
+    </button>
     <button class="cart-btn" id="cartOpen" aria-label="Open cart">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
       <span class="cart-count" id="cartCount">0</span>
@@ -319,8 +324,65 @@
     <button class="btn btn-gold full" id="checkoutBtn">Proceed to Checkout</button>
   </div>
 </aside>
+
+<!-- ACCOUNT / SIGN IN -->
+<div class="auth-overlay" id="authOverlay"></div>
+<div class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" aria-hidden="true">
+  <button class="auth-close" id="authClose" aria-label="Close">✕</button>
+  <svg class="auth-lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus"/></svg>
+
+  <!-- Signed-out view -->
+  <div id="authGuest">
+    <h2 id="authTitle">Welcome back</h2>
+    <p class="auth-sub" id="authSub">Sign in to open your saved bag and your orders.</p>
+
+    <div class="auth-tabs" role="tablist">
+      <button type="button" class="auth-tab active" data-mode="signin" role="tab" aria-selected="true">Sign in</button>
+      <button type="button" class="auth-tab" data-mode="signup" role="tab" aria-selected="false">Create account</button>
+    </div>
+
+    <form id="authForm" novalidate>
+      <label class="auth-field" id="authNameField" hidden>
+        <span>Your name</span>
+        <input type="text" id="authName" autocomplete="name" maxlength="100">
+      </label>
+      <label class="auth-field">
+        <span>Email</span>
+        <input type="email" id="authEmail" autocomplete="email" inputmode="email">
+      </label>
+      <label class="auth-field">
+        <span>Password</span>
+        <input type="password" id="authPass" autocomplete="current-password">
+      </label>
+      <button type="button" class="auth-link" id="authForgot">Forgot password?</button>
+      <p class="auth-msg" id="authMsg" role="alert"></p>
+      <button type="submit" class="btn btn-gold" id="authSubmit">Sign in</button>
+    </form>
+
+    <div class="auth-divider">or</div>
+    <button type="button" class="btn-google" id="authGoogle">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+  </div>
+
+  <!-- Signed-in view -->
+  <div id="authUser" hidden>
+    <div class="auth-avatar" id="authAvatar"></div>
+    <h2 id="authUserName">Welcome</h2>
+    <p class="auth-user-email" id="authUserEmail"></p>
+    <div class="auth-orders">
+      <h3>Your orders</h3>
+      <div id="orderList"></div>
+    </div>
+    <button type="button" class="btn btn-ghost" id="authSignOut">Sign out</button>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status"></div>
 
+<script src="firebase-config.js"></script>
 <script src="script.js"></script>
+<script src="auth.js"></script>
 </body>
 </html>

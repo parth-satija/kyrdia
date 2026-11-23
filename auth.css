@@ -1,0 +1,81 @@
+/* =========================================================
+   KRIDIA — Account button + sign-in modal
+   ========================================================= */
+
+[hidden] { display:none !important; }
+
+/* ---------- Header account button ---------- */
+.account-btn { position:relative; display:flex; align-items:center; justify-content:center; width:28px; height:28px; color:var(--umber); transition:transform .3s var(--ease); }
+.account-btn:hover { transform:scale(1.1); }
+.account-btn .acct-initial { display:none; width:28px; height:28px; border-radius:50%; background:var(--goldgrad); color:var(--espresso); font-family:var(--serif); font-weight:600; font-size:1.1rem; line-height:28px; text-align:center; box-shadow:0 0 0 2px var(--ivory), 0 0 0 3px var(--gold); }
+.account-btn.signed-in svg { display:none; }
+.account-btn.signed-in .acct-initial { display:block; }
+
+/* ---------- Modal ---------- */
+.auth-overlay { position:fixed; inset:0; background:rgba(42,22,13,.6); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity .5s; z-index:95; }
+.auth-overlay.show { opacity:1; pointer-events:auto; }
+
+.auth-modal {
+  position:fixed; z-index:96; left:50%; top:50%;
+  width:min(440px, calc(100vw - 2rem)); max-height:calc(100vh - 2rem); overflow-y:auto;
+  transform:translate(-50%, -46%) scale(.97); opacity:0; pointer-events:none;
+  transition:transform .55s var(--ease), opacity .4s;
+  background:var(--ivory); border:1.5px solid var(--gold);
+  border-radius:200px 200px 22px 22px; padding:3.6rem 2.2rem 2.2rem; text-align:center;
+  box-shadow:0 40px 80px -30px rgba(42,22,13,.75);
+  scrollbar-width:thin;
+}
+.auth-modal::before { content:''; position:absolute; inset:8px; border:1px solid rgba(184,137,59,.35); border-radius:194px 194px 16px 16px; pointer-events:none; }
+.auth-modal.open { transform:translate(-50%, -50%) scale(1); opacity:1; pointer-events:auto; }
+
+.auth-close { position:absolute; top:1.1rem; right:1.1rem; width:34px; height:34px; border-radius:50%; font-size:1rem; z-index:2; transition:background .3s; }
+.auth-close:hover { background:var(--cream); }
+.auth-lotus { width:46px; height:28px; margin:0 auto .6rem; color:var(--gold); }
+.auth-modal h2 { font-size:2.1rem; }
+.auth-sub { font-size:.92rem; color:var(--umber); opacity:.85; margin:.5rem auto 1.4rem; max-width:26rem; }
+
+.auth-tabs { display:flex; gap:.4rem; padding:.3rem; margin-bottom:1.3rem; border:1px solid rgba(184,137,59,.5); border-radius:999px; background:rgba(255,255,255,.5); }
+.auth-tab { flex:1; padding:.6rem .8rem; border-radius:999px; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--umber); transition:all .4s var(--ease); }
+.auth-tab.active { background:var(--umber); color:var(--gold-lt); }
+
+.auth-field { display:block; text-align:left; margin-bottom:.9rem; }
+.auth-field span { display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-dk); margin:0 0 .35rem 1.1rem; }
+.auth-field input { width:100%; padding:.85rem 1.2rem; font:inherit; font-size:.95rem; color:var(--ink); background:#fff9ec; border:1px solid rgba(184,137,59,.55); border-radius:999px; outline:none; transition:border-color .3s, box-shadow .3s; }
+.auth-field input:focus { border-color:var(--gold-dk); box-shadow:0 0 0 3px rgba(184,137,59,.22); }
+
+.auth-link { display:block; margin:-.2rem auto 1rem; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--terracotta); border-bottom:1px solid transparent; transition:border-color .3s; }
+.auth-link:hover { border-color:var(--terracotta); }
+
+.auth-msg { min-height:1.3rem; margin:0 0 .8rem; font-size:.85rem; color:#a3281f; }
+.auth-msg.ok { color:#2f6b3d; }
+
+.auth-modal .btn { width:100%; }
+.auth-modal .btn[disabled], .auth-modal .btn.busy { opacity:.6; pointer-events:none; }
+
+.auth-divider { display:flex; align-items:center; gap:.9rem; margin:1.2rem 0; font-size:.62rem; letter-spacing:.24em; text-transform:uppercase; color:var(--gold-dk); }
+.auth-divider::before, .auth-divider::after { content:''; flex:1; height:1px; background:rgba(184,137,59,.4); }
+
+.btn-google { display:flex; align-items:center; justify-content:center; gap:.7rem; padding:.9rem 1.4rem; border:1px solid rgba(138,95,34,.55); border-radius:999px; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--umber); background:#fff9ec; transition:all .4s var(--ease); width:100%; }
+.btn-google:hover { background:var(--umber); color:var(--cream); border-color:var(--umber); }
+.btn-google[disabled] { opacity:.6; pointer-events:none; }
+.btn-google svg { width:18px; height:18px; flex:none; }
+
+/* ---------- Signed-in view ---------- */
+.auth-avatar { width:76px; height:76px; margin:0 auto 1rem; border-radius:50%; background:var(--goldgrad); display:grid; place-items:center; font-family:var(--serif); font-size:2.2rem; font-weight:600; color:var(--espresso); box-shadow:0 0 0 5px var(--ivory), 0 0 0 6px var(--gold); }
+.auth-user-email { font-size:.88rem; color:var(--umber); opacity:.8; margin:.2rem 0 1.4rem; word-break:break-all; }
+.auth-orders { text-align:left; margin-bottom:1.5rem; }
+.auth-orders h3 { font-size:1.35rem; text-align:center; margin-bottom:.8rem; }
+#orderList { font-size:.9rem; color:var(--umber); text-align:center; max-height:210px; overflow-y:auto; }
+.order-row { display:flex; justify-content:space-between; gap:1rem; padding:.8rem 0; border-top:1px solid rgba(184,137,59,.3); text-align:left; }
+.order-row strong { display:block; font-family:var(--serif); font-size:1.1rem; font-weight:600; color:var(--espresso); }
+.order-row small { display:block; font-size:.74rem; opacity:.75; line-height:1.4; }
+.order-meta { text-align:right; flex:none; }
+.order-status { display:inline-block; padding:.12rem .7rem; border-radius:999px; background:var(--espresso); color:var(--gold-lt); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; margin-bottom:.2rem; }
+
+@media (max-width:900px) {
+  .nav-right { gap:1.1rem; }
+}
+@media (max-width:480px) {
+  .auth-modal { padding:3.2rem 1.4rem 1.8rem; border-radius:150px 150px 20px 20px; }
+  .auth-modal::before { border-radius:144px 144px 14px 14px; }
+}
