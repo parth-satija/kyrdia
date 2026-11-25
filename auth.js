@@ -347,6 +347,7 @@
   /* ---------- Checkout: the bag's button opens checkout.html (the order is created there, after delivery details) ---------- */
   function wireCheckout() {
     const old = $('#checkoutBtn');
+    if (!old) return;                  // not every page has the bag drawer
     const btn = old.cloneNode(true);   // drops common.js’s default handler
     old.replaceWith(btn);
     btn.addEventListener('click', async () => {
@@ -368,6 +369,7 @@
   /* ---------- Newsletter → Firestore ---------- */
   function wireNewsletter() {
     const old = $('#newsForm');
+    if (!old) return;                  // the newsletter form only exists on the home page
     const f = old.cloneNode(true);     // drops script.js’s local-only handler
     old.replaceWith(f);
     const out = $('#newsMsg');
@@ -433,8 +435,9 @@
       auth = A.getAuth(app);
       db = F.getFirestore(app);
       ready = true;
-      wireCheckout();
-      wireNewsletter();
+      // Page-specific wiring must never stop the auth listener below from attaching.
+      try { wireCheckout(); } catch (e) { console.error('Kridia: checkout wiring failed', e); }
+      try { wireNewsletter(); } catch (e) { console.error('Kridia: newsletter wiring failed', e); }
 
       A.onAuthStateChanged(auth, async u => {
         if (KStore.isAdminUser(u)) {   // the admin signs in here too, but is not a shopper: no bag/profile sync
