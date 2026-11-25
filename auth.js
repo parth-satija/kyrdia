@@ -262,7 +262,8 @@
     const email = emailInput.value.trim();
     const pass = passInput.value;
     const name = nameInput.value.trim();
-    if (mode === 'signin' && email.toLowerCase() === 'admin') return adminLogin(pass);
+    const lower = email.toLowerCase();
+    if (mode === 'signin' && (lower === 'admin' || lower === String(window.KRIDIA_ADMIN_EMAIL || '').toLowerCase())) return adminLogin(pass);
     if (!ready) return setMsg('Sign in is not available right now. Please try again shortly.');
     setMsg('');
     if (!/^\S+@\S+\.\S+$/.test(email)) return setMsg('Please enter a valid email address.');
