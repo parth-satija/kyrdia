@@ -14,3 +14,9 @@ window.KRIDIA_FIREBASE_CONFIG = {
   messagingSenderId: '110079257065',
   appId: '1:110079257065:web:b07024229784990a0ec378'
 };
+
+/* Admin sign-in: typing "Admin" as the email on the website's sign-in window signs in
+   to this Firebase Authentication account (Email/Password). Create it once in
+   Firebase Console → Authentication → Users → Add user, and use the SAME address in
+   firestore.rules (function isAdmin). See SETUP.md → "GitHub Pages". */
+window.KRIDIA_ADMIN_EMAIL = 'admin@kridia.in';

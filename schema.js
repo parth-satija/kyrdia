@@ -1,3 +1,8 @@
+(function (root, factory) {
+  const api = factory();
+  if (typeof module !== 'undefined' && module.exports) module.exports = api; // Node (server.js)
+  else root.KSchema = api;                                                  // Browser (GitHub Pages)
+})(this, function () {
 'use strict';
 /* =========================================================
    KRIDIA — content schema
@@ -294,4 +299,5 @@ function cleanSettings(input, ctx, lenient) {
 
 const defaultSettings = () => cleanSettings({}, { hasId: () => false }, true);
 
-module.exports = { COLLECTIONS, SETTINGS_GROUPS, cleanItem, cleanSettings, defaultSettings, getPath, setPath, isImg };
+return { COLLECTIONS, SETTINGS_GROUPS, cleanItem, cleanSettings, defaultSettings, getPath, setPath, isImg };
+});

@@ -15,6 +15,7 @@
     return;
   }
 
+  await loadFullImages(p);   // swap the thumbnail for the full-size gallery images
   const imgs = imagesOf(p);
   const cat = catById(p.categoryId);
   const maker = artisanById(p.artisanId);

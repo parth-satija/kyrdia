@@ -248,18 +248,11 @@
     if (!pass) return setMsg('Please enter your password.');
     setBusy(true);
     try {
-      const r = await fetch('api/admin/login', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'kridia' },
-        body: JSON.stringify({ password: pass })
-      });
-      const d = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(d.error || 'Incorrect email or password.');
+      await KStore.signInAdmin(pass);
       setMsg('Welcome, Admin. Opening the dashboard…', true);
       location.href = 'admin.html';
     } catch (err) {
-      setMsg(err instanceof TypeError ? 'Could not reach the server. Start it with “node server.js”.' : err.message);
+      setMsg(err.message || 'Incorrect email or password.');
       setBusy(false);
     }
   }
@@ -450,6 +443,11 @@
       wireNewsletter();
 
       A.onAuthStateChanged(auth, async u => {
+        if (KStore.isAdminUser(u)) {   // the admin signs in here too, but is not a shopper: no bag/profile sync
+          user = null; cloudReady = false; clearTimeout(pushTimer);
+          renderAccountUI();
+          return;
+        }
         user = u;
         renderAccountUI();
         if (u) {

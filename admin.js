@@ -28,17 +28,9 @@
     o[ks[ks.length - 1]] = v;
   }
 
-  /* ---------- API ---------- */
-  async function api(method, url, body, raw) {
-    const opt = { method, credentials: 'same-origin', headers: { 'X-Requested-With': 'kridia' } };
-    if (raw) { opt.body = raw.body; Object.assign(opt.headers, raw.headers); }
-    else if (body !== undefined) { opt.headers['Content-Type'] = 'application/json'; opt.body = JSON.stringify(body); }
-    const r = await fetch(url, opt);
-    let d = {};
-    try { d = await r.json(); } catch (e) { /* ignore */ }
-    if (r.status === 401) { location.href = '/'; throw new Error('Signed out'); }
-    if (!r.ok) throw new Error(d.error || 'Request failed (' + r.status + ')');
-    return d;
+  /* ---------- API (Firebase-backed; see store.js) ---------- */
+  function api(method, url, body, raw) {
+    return KAdmin.call(method, url, body, raw);
   }
 
   let toastTimer;
@@ -110,7 +102,7 @@
           c.classList.toggle('sel', sel.has(im.path));
           count.textContent = sel.size + ' selected';
         }
-      }, h('img', { src: im.path, alt: im.name, loading: 'lazy' }));
+      }, h('img', { src: im.thumb, alt: im.label || im.name, loading: 'lazy' }));
       grid.append(c);
     });
     const body = images.length ? h('div', null, grid) : h('p', { class: 'noimg' }, 'The image library is empty. Upload an image first.');
@@ -131,7 +123,7 @@
       grid.replaceChildren();
       if (!list.length) grid.append(h('p', { class: 'noimg' }, 'No image yet.'));
       list.forEach((p, i) => grid.append(h('div', { class: 'thumb' + (multi && i === 0 ? ' main' : '') },
-        h('img', { src: p, alt: '' }),
+        h('img', { src: KAdmin.thumb(p), alt: '' }),
         multi && i === 0 ? h('span', { class: 'badge' }, 'Main') : null,
         h('div', { class: 'tb' },
           multi ? h('button', { type: 'button', title: 'Move earlier', onclick: () => move(i, -1) }, '◀') : null,
@@ -243,10 +235,9 @@
 
   /* ---------- overview ---------- */
   function viewOverview() {
-    setHead('Overview', h('a', { class: 'btn ghost', href: '/', target: '_blank', rel: 'noopener' }, 'View website ↗'));
+    setHead('Overview', h('a', { class: 'btn ghost', href: 'index.html', target: '_blank', rel: 'noopener' }, 'View website ↗'));
     view.append(
-      h('div', { class: 'note' }, h('b', null, 'Welcome. '), 'Everything on the website is managed here and saved as JSON in the ', h('b', null, 'data'),
-        ' folder; uploaded images are saved in the ', h('b', null, 'images'), ' folder. Start with ', h('a', { href: '#categories' }, 'categories'),
+      h('div', { class: 'note' }, h('b', null, 'Welcome. '), 'Everything on the website is managed here and saved to your Firebase database (images included). Start with ', h('a', { href: '#categories' }, 'categories'),
         ', then add ', h('a', { href: '#listings' }, 'listings'), '. Remember to change the admin password under ', h('a', { href: '#security' }, 'Security'), '.'),
       h('div', { class: 'cards' }, ...Object.entries(SCHEMA.collections).map(([k, d]) =>
         h('a', { class: 'card stat', href: '#' + k }, h('strong', null, DATA.collections[k].length), h('span', null, d.label)))));
@@ -276,7 +267,7 @@
       let thumb = null;
       if (def.thumb) {
         const t = it[def.thumb]; const src = Array.isArray(t) ? t[0] : t;
-        thumb = h('td', { class: 'thumbcell' }, src ? h('img', { src, alt: '', loading: 'lazy' }) : h('div', { class: 'ph' }));
+        thumb = h('td', { class: 'thumbcell' }, src ? h('img', { src: KAdmin.thumb(src), alt: '', loading: 'lazy' }) : h('div', { class: 'ph' }));
       }
       return h('tr', null, thumb,
         ...def.cols.map((k, ci) => h('td', { class: ci === 0 ? 'strong' : 'clip' }, cellText(def, it, k))),
@@ -357,7 +348,7 @@
     const upBtn = h('button', { class: 'btn primary', onclick: () => file.click() }, '⬆ Upload images');
     setHead('Image library', upBtn, file);
     const msg = h('p', { class: 'help' });
-    const drop = h('div', { class: 'dropzone' }, 'Drag images here, or use “Upload images”. All images are saved in the ', h('b', null, 'images'), ' folder.', msg);
+    const drop = h('div', { class: 'dropzone' }, 'Drag images here, or use “Upload images”. Photos are resized in your browser and saved to your Firebase database.', msg);
     const grid = h('div', { class: 'gallery-grid' });
     view.append(drop, grid);
 
@@ -383,8 +374,8 @@
       images.forEach(im => {
         const used = usageCount(im.path);
         grid.append(h('div', { class: 'gcard' },
-          h('img', { src: im.path, alt: '', loading: 'lazy' }),
-          h('div', { class: 'meta' }, im.name, h('br'), (im.size / 1024).toFixed(0) + ' KB · ' + (used ? 'used ' + used + '×' : 'not used')),
+          h('img', { src: im.thumb, alt: '', loading: 'lazy' }),
+          h('div', { class: 'meta' }, im.label || im.name, h('br'), (im.size / 1024).toFixed(0) + ' KB · ' + (used ? 'used ' + used + '×' : 'not used')),
           h('div', { class: 'row' }, h('span'), h('button', {
             class: 'btn danger sm', onclick: async () => {
               if (!confirm(used ? `This image is used ${used} time(s) on the site. Deleting it removes it from those places. Continue?` : 'Delete this image?')) return;
@@ -417,13 +408,13 @@
       catch (ex) { err.textContent = ex.message; }
       btn.disabled = false;
     });
-    view.append(form, h('p', { class: 'help', style: 'margin-top:1rem' }, 'The password is stored only as a salted hash in data/admin-auth.json. Sessions last 8 hours.'));
+    view.append(form, h('p', { class: 'help', style: 'margin-top:1rem' }, 'You are signed in with your Firebase admin account. The session ends when you close this browser tab.'));
   }
 
   /* ---------- boot ---------- */
   $('#logout').addEventListener('click', async () => {
     try { await api('POST', 'api/admin/logout'); } catch (e) { /* ignore */ }
-    location.href = '/';
+    location.href = 'index.html';
   });
   (async function boot() {
     try {

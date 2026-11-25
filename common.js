@@ -8,7 +8,7 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const fmt = n => '₹' + Number(n || 0).toLocaleString('en-IN');
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const safeImg = p => (typeof p === 'string' && /^images\/[A-Za-z0-9][A-Za-z0-9._-]*$/.test(p)) ? p : '';
+const safeImg = p => (typeof p === 'string' && /^data:image\/(?:webp|jpeg|png);base64,/.test(p)) ? p : '';
 const paragraphs = t => String(t || '').split(/\n{2,}/).map(s => s.trim()).filter(Boolean);
 
 /* ---------- Content (filled once the data has loaded) ---------- */
@@ -150,20 +150,56 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
 const observeReveals = () => $$('.reveal:not(.in)').forEach(el => io.observe(el));
 
-/* ---------- Load content from the local server ---------- */
+/* ---------- Load content from Firebase (see store.js) ---------- */
+/* Images are stored in Firestore and referenced as "images/<id>". Before the page is
+   drawn they are swapped for data URLs: small thumbnails for cards, full size for
+   the hero / story pictures and the listing gallery. */
+const IS_HOME = !!document.getElementById('rail');
+const isRef = v => typeof v === 'string' && /^images\//.test(v);
+
+async function resolveImages() {
+  const jobs = [];
+  const swap = (obj, key, kind) => {
+    if (!obj || !isRef(obj[key])) return;
+    jobs.push(KStore.image(obj[key], kind).then(u => { obj[key] = u; }));
+  };
+  PRODUCTS.forEach(p => {
+    p.imagePaths = (p.images || []).filter(isRef);        // kept for the full-size gallery
+    const first = p.imagePaths[0];
+    p.images = [];
+    if (first) jobs.push(KStore.image(first, 'thumb').then(u => { p.images = u ? [u] : []; }));
+  });
+  ARTISANS.forEach(a => swap(a, 'image', 'thumb'));
+  if (IS_HOME) {
+    CATS.forEach(c => swap(c, 'image', 'thumb'));
+    JOURNAL.forEach(j => swap(j, 'image', 'thumb'));
+    ['hero.image1', 'hero.image2', 'hero.image3', 'heritage.image1', 'heritage.image2', 'heritage.image3'].forEach(k => {
+      const [g, n] = k.split('.');
+      swap(SITE[g], n, 'full');
+    });
+  }
+  await Promise.all(jobs);
+}
+/* Listing page: swap a listing's thumbnail for all of its full-size images. */
+async function loadFullImages(p) {
+  const paths = p.imagePaths || [];
+  if (!paths.length) return;
+  const urls = await Promise.all(paths.map(async x => (await KStore.image(x, 'full')) || (await KStore.image(x, 'thumb'))));
+  p.images = urls.filter(Boolean);
+}
+
 window.kridiaReady = (async () => {
   try {
-    const r = await fetch('api/public', { cache: 'no-store' });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const d = await r.json();
+    const d = await KStore.loadPublic();
     SITE = d.settings || {}; CATS = d.categories || []; PRODUCTS = d.listings || [];
     ARTISANS = d.artisans || []; REVIEWS = d.reviews || []; JOURNAL = d.journal || [];
+    await resolveImages();
     cart = cart.filter(i => byId(i.id));
     bindText();
     applyVisibility();
     return true;
   } catch (e) {
-    console.error('Kridia: could not load site content. Start the site with "node server.js" (see SETUP.md).', e);
+    console.error('Kridia: could not load site content (check firebase-config.js, Firestore rules and your connection).', e);
     return false;
   } finally {
     renderCart();

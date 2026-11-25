@@ -1,5 +1,38 @@
 # Kridia — Admin, content & Firebase setup
 
+## GitHub Pages (recommended): admin, listings, images and sign-in with no server
+
+The site is fully static. All content (listings, categories, artisans, reviews, journal, website text) **and images** live in your Firebase project (Firestore), and the admin signs in with Firebase Authentication. Nothing needs `node server.js` any more.
+
+### One-time setup (about 5 minutes)
+
+1. **Publish the rules.** Firebase Console → Firestore Database → **Rules** → paste the contents of `firestore.rules` → **Publish**. (Or `firebase deploy --only firestore:rules`.)
+2. **Create the admin account.** Firebase Console → Authentication → Sign-in method: make sure **Email/Password** is enabled. Then Users → **Add user**:
+   - Email: `admin@kridia.in` (any address works, but it must match `KRIDIA_ADMIN_EMAIL` in `firebase-config.js` **and** the address inside `isAdmin()` in `firestore.rules`)
+   - Password: choose a **strong, unique password**. This is your admin password.
+   - Do this *before* publishing the site, so nobody else can register that address.
+3. **Authorise your GitHub Pages address.** Authentication → Settings → **Authorized domains** → Add `YOUR-USERNAME.github.io`.
+4. **Push to GitHub and turn on Pages.** Repository → Settings → Pages → Source: *Deploy from a branch* → `main` / `(root)`. The site is then at `https://YOUR-USERNAME.github.io/REPO-NAME/`.
+
+### Using it
+
+- On the website click the account icon, type **`Admin`** in the Email field and your admin password, then Sign in. You land on `admin.html`.
+- Add categories, then listings, upload images, edit website text. Changes are live on the site immediately (no redeploy).
+- Change the admin password under Admin → Security. The admin session ends when the browser tab is closed.
+
+### How images are stored
+
+Firebase Storage now requires a paid plan, so images are resized in your browser (max 1500 px, WebP/JPEG) and saved in Firestore: a small thumbnail (used on cards) plus a full-size copy (hero, gallery). That keeps everything on the free tier. It suits a boutique catalogue of a few hundred photos; if you outgrow it, move images to Firebase Storage / Cloudinary later.
+
+### Notes
+
+- `server.js`, `data/` and `package.json` are only for the old local mode and are not used on GitHub Pages.
+- The Firebase `apiKey` in `firebase-config.js` is not a secret; access is controlled by the rules above.
+
+---
+
+# Legacy local mode (node server.js)
+
 ## Admin page, content and images
 
 Run `node server.js`, then open http://localhost:3000.
