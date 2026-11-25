@@ -209,7 +209,7 @@
       const snap = await F.getDocs(q);
       if (!user || user.uid !== uid) return;
       list.textContent = '';
-      if (snap.empty) { list.textContent = 'No orders yet. Your first saree awaits.'; return; }
+      if (snap.empty) { list.textContent = 'No orders yet. Your first bridal piece awaits.'; return; }
       snap.forEach(d => {
         const o = d.data();
         const when = o.createdAt && o.createdAt.toDate
@@ -220,7 +220,7 @@
         row.className = 'order-row';
         const left = document.createElement('div');
         const t = document.createElement('strong');
-        t.textContent = `${count} ${count === 1 ? 'saree' : 'sarees'} · ${fmt(o.total || 0)}`;
+        t.textContent = `${count} ${count === 1 ? 'piece' : 'pieces'} · ${fmt(o.total || 0)}`;
         const s = document.createElement('small');
         s.textContent = (o.items || []).map(i => i.name).join(', ');
         left.append(t, s);
@@ -242,12 +242,35 @@
   }
 
   /* ---------- Auth actions ---------- */
+  /* ---------- Admin sign-in (email "Admin" + admin password) ---------- */
+  async function adminLogin(pass) {
+    setMsg('');
+    if (!pass) return setMsg('Please enter your password.');
+    setBusy(true);
+    try {
+      const r = await fetch('api/admin/login', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'kridia' },
+        body: JSON.stringify({ password: pass })
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'Incorrect email or password.');
+      setMsg('Welcome, Admin. Opening the dashboard…', true);
+      location.href = 'admin.html';
+    } catch (err) {
+      setMsg(err instanceof TypeError ? 'Could not reach the server. Start it with “node server.js”.' : err.message);
+      setBusy(false);
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!ready) return;
     const email = emailInput.value.trim();
     const pass = passInput.value;
     const name = nameInput.value.trim();
+    if (mode === 'signin' && email.toLowerCase() === 'admin') return adminLogin(pass);
+    if (!ready) return setMsg('Sign in is not available right now. Please try again shortly.');
     setMsg('');
     if (!/^\S+@\S+\.\S+$/.test(email)) return setMsg('Please enter a valid email address.');
     if (mode === 'signup') {
@@ -379,7 +402,7 @@
         const data = { email, createdAt: F.serverTimestamp() };
         if (user) data.uid = user.uid;
         await F.setDoc(F.doc(db, 'subscribers', email), data);
-        out.textContent = 'Welcome to the Maison. Your invitation is on its way.';
+        out.textContent = sv('newsletter.success', 'Thank you for subscribing.');
         f.reset();
       } catch (err) {
         // Rules block overwriting an existing subscriber, which surfaces as permission-denied.
@@ -393,18 +416,14 @@
   }
 
   /* ---------- Wiring ---------- */
-  acctBtn.addEventListener('click', () => {
-    if (!configured) return toast('Add your Firebase config in firebase-config.js to enable sign in');
-    if (!ready) return toast('Sign in is still loading — one moment');
-    openModal();
-  });
+  acctBtn.addEventListener('click', () => openModal());
   $('#authClose').addEventListener('click', closeModal);
   overlay.addEventListener('click', closeModal);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
   document.querySelectorAll('.auth-tab').forEach(t => t.addEventListener('click', () => setMode(t.dataset.mode)));
   form.addEventListener('submit', handleSubmit);
-  googleBtn.addEventListener('click', handleGoogle);
-  forgotBtn.addEventListener('click', handleForgot);
+  googleBtn.addEventListener('click', () => (ready ? handleGoogle() : setMsg('Sign in is not available right now. Please try again shortly.')));
+  forgotBtn.addEventListener('click', () => (ready ? handleForgot() : setMsg('Sign in is not available right now. Please try again shortly.')));
   $('#authSignOut').addEventListener('click', handleSignOut);
   setMode('signin');
 
@@ -416,6 +435,7 @@
 
   (async function init() {
     try {
+      await window.kridiaReady;   // product data must be loaded before the bag is synced
       const [appM, authM, fsM] = await Promise.all([
         import(CDN + 'firebase-app.js'),
         import(CDN + 'firebase-auth.js'),

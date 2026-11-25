@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kridia — Rajasthani Sarees, Woven in Sandstone &amp; Gold</title>
-<meta name="description" content="Kridia is a luxury house devoted to the Rajasthani saree: Bandhani, Leheriya, Kota Doria, Gota Patti, Block Print, Banarasi, Chanderi and Bagru, handcrafted by master artisans.">
+<title>Kridia — Luxury Bridal Wear, Crafted in Gold &amp; Ivory</title>
+<meta name="description" content="Kridia is a luxury house devoted to bridal wear, handcrafted by master artisans and finished with fine gold detailing.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
@@ -47,16 +47,16 @@
 </svg>
 
 <div class="announce">
-  <span>Complimentary insured shipping across India</span><i class="dot"></i>
-  <span>Handwoven · Artisan signed</span><i class="dot hide-sm"></i>
-  <span class="hide-sm">Free fall &amp; pico with every saree</span>
+  <span data-s="announce.a1">Complimentary insured shipping across India</span><i class="dot"></i>
+  <span data-s="announce.a2">Handcrafted · Artisan signed</span><i class="dot hide-sm"></i>
+  <span class="hide-sm" data-s="announce.a3">Made-to-measure bridal fittings</span>
 </div>
 
 <header class="site-header" id="top">
   <nav class="nav nav-left" aria-label="Primary">
-    <a href="#collections">Weaves</a>
-    <a href="#sarees">Sarees</a>
-    <a href="#anatomy">The Drape</a>
+    <a href="#collections" data-show-if="categories">Collections</a>
+    <a href="#bridal">Bridal Wear</a>
+    <a href="#anatomy" data-show-if="anatomy">The Details</a>
   </nav>
 
   <a href="#top" class="brand" aria-label="Kridia home">
@@ -64,13 +64,13 @@
       <path d="M4 68V32C4 22 14 17 22 12C27 9 29 5 30 1C31 5 33 9 38 12C46 17 56 22 56 32V68" fill="none" stroke="url(#goldGrad)" stroke-width="2"/>
       <path d="M12 68V34C12 27 19 23 25 19C28 17 29.5 14 30 11C30.5 14 32 17 35 19C41 23 48 27 48 34V68" fill="none" stroke="url(#goldGrad)" stroke-width="1"/>
     </svg>
-    <span class="brand-name">Kridia</span>
-    <span class="brand-sub">Sarees of Marwar</span>
+    <span class="brand-name" data-s="brand.name">Kridia</span>
+    <span class="brand-sub" data-s="brand.sub">Bridal Couture</span>
   </a>
 
   <nav class="nav nav-right" aria-label="Secondary">
-    <a href="#artisans">Weavers</a>
-    <a href="#journal">Journal</a>
+    <a href="#artisans" data-show-if="artisans">Artisans</a>
+    <a href="#journal" data-show-if="journal">Journal</a>
     <button class="account-btn" id="acctOpen" aria-label="Sign in">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 4-6 7.5-6s6.7 2 7.5 6"/></svg>
       <span class="acct-initial" aria-hidden="true"></span>
@@ -84,11 +84,11 @@
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#collections">Weaves</a>
-  <a href="#sarees">Sarees</a>
-  <a href="#anatomy">The Drape</a>
-  <a href="#artisans">Weavers</a>
-  <a href="#journal">Journal</a>
+  <a href="#collections" data-show-if="categories">Collections</a>
+  <a href="#bridal">Bridal Wear</a>
+  <a href="#anatomy" data-show-if="anatomy">The Details</a>
+  <a href="#artisans" data-show-if="artisans">Artisans</a>
+  <a href="#journal" data-show-if="journal">Journal</a>
 </div>
 
 <main>
@@ -100,18 +100,14 @@
   </div>
 
   <div class="hero-copy reveal">
-    <p class="eyebrow"><svg viewBox="0 0 100 60" class="eyebrow-lotus"><use href="#lotus"/></svg> Six yards of Rajasthan</p>
-    <h1>The saree, <em>woven</em><br>in sandstone &amp; gold</h1>
-    <p class="lead">Kridia is devoted to a single garment. Bandhani knotted by hand, Leheriya dyed in desert waves, Kota Doria spun light as air — each saree made by a hereditary artisan and finished with a gold kinara.</p>
+    <p class="eyebrow"><svg viewBox="0 0 100 60" class="eyebrow-lotus"><use href="#lotus"/></svg> <span data-s="hero.eyebrow">Bridal couture</span></p>
+    <h1 id="heroTitle">The bride, <em>adorned</em><br>in gold &amp; silk</h1>
+    <p class="lead" data-s="hero.lead">Kridia is devoted to the bride. Each bridal piece is designed with care, embroidered by skilled artisans and finished with fine gold detailing, made for the day you will remember forever.</p>
     <div class="hero-cta">
-      <a href="#sarees" class="btn btn-gold">Shop Sarees</a>
-      <a href="#collections" class="btn btn-ghost">Explore Weaves</a>
+      <a href="#bridal" class="btn btn-gold" data-s="hero.btn1">Shop Bridal Wear</a>
+      <a href="#collections" class="btn btn-ghost" data-s="hero.btn2" data-show-if="categories">Explore Collections</a>
     </div>
-    <ul class="hero-stats">
-      <li><strong>8</strong><span>Heritage weaves</span></li>
-      <li><strong>240+</strong><span>Master artisans</span></li>
-      <li><strong>6.3 m</strong><span>Of pure drape</span></li>
-    </ul>
+    <ul class="hero-stats" id="heroStats" hidden></ul>
   </div>
 
   <div class="hero-arches reveal">
@@ -120,28 +116,25 @@
     <div class="ha ha-r"><div class="rarch"><div id="heroR"></div></div></div>
     <div class="hero-badge">
       <svg viewBox="0 0 100 60"><use href="#lotus"/></svg>
-      <span>Handwoven<br>in Rajasthan</span>
+      <span data-s-lines="hero.badge">Handcrafted<br>bridal couture</span>
     </div>
   </div>
 </section>
 
-<section class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span>Bandhani</span><i>✦</i><span>Leheriya</span><i>✦</i><span>Kota Doria</span><i>✦</i><span>Gota Patti</span><i>✦</i><span>Block Print</span><i>✦</i><span>Banarasi</span><i>✦</i><span>Chanderi</span><i>✦</i><span>Bagru</span><i>✦</i>
-    <span>Bandhani</span><i>✦</i><span>Leheriya</span><i>✦</i><span>Kota Doria</span><i>✦</i><span>Gota Patti</span><i>✦</i><span>Block Print</span><i>✦</i><span>Banarasi</span><i>✦</i><span>Chanderi</span><i>✦</i><span>Bagru</span><i>✦</i>
-  </div>
+<section class="marquee" aria-hidden="true" data-show-if="categories" hidden>
+  <div class="marquee-track" id="marqueeTrack"></div>
 </section>
 
 <!-- CATEGORY RAIL -->
-<section class="rail-section" id="collections">
+<section class="rail-section" id="collections" data-show-if="categories" hidden>
   <header class="section-head reveal">
-    <span class="deva">साड़ी</span>
-    <p class="eyebrow">The Weaves</p>
-    <h2>Eight doorways into the saree</h2>
+    <span class="deva" data-s="collections.deva">दुल्हन</span>
+    <p class="eyebrow" data-s="collections.eyebrow">The Collections</p>
+    <h2 data-s="collections.title">Find your bridal collection</h2>
     <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
   </header>
 
-  <div class="rail" id="rail" aria-label="Saree categories, scroll horizontally"></div>
+  <div class="rail" id="rail" aria-label="Bridal collections, scroll horizontally"></div>
 
   <div class="rail-ctrl">
     <button class="rail-btn" id="railPrev" aria-label="Previous">←</button>
@@ -150,12 +143,12 @@
   </div>
 </section>
 
-<!-- SAREES -->
-<section class="section section-sand" id="sarees">
+<!-- LISTINGS -->
+<section class="section section-sand" id="bridal">
   <header class="section-head reveal">
-    <span class="deva">विशेष</span>
-    <p class="eyebrow">The Edit</p>
-    <h2>Sarees worthy of an heirloom</h2>
+    <span class="deva" data-s="listings.deva">विशेष</span>
+    <p class="eyebrow" data-s="listings.eyebrow">The Edit</p>
+    <h2 data-s="listings.title">Bridal wear worthy of an heirloom</h2>
     <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
   </header>
   <div class="filters reveal" id="filters"></div>
@@ -163,22 +156,17 @@
 </section>
 
 <!-- ANATOMY -->
-<section class="section" id="anatomy">
+<section class="section" id="anatomy" data-show-if="anatomy" hidden>
   <header class="section-head reveal">
-    <span class="deva">पल्लू</span>
-    <p class="eyebrow">Anatomy of a Kridia saree</p>
-    <h2>Every inch, considered</h2>
+    <span class="deva" data-s="anatomy.deva">शिल्प</span>
+    <p class="eyebrow" data-s="anatomy.eyebrow">Anatomy of a Kridia bridal piece</p>
+    <h2 data-s="anatomy.title">Every stitch, considered</h2>
     <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
   </header>
-  <div class="anatomy">
-    <article class="part reveal"><span class="num">I</span><h3>Pallu</h3><p>The ornate end that crosses the shoulder, where the weaver’s finest work is saved.</p></article>
-    <article class="part reveal" style="--d:.1s"><span class="num">II</span><h3>Kinara</h3><p>The gold-edged border in real zari, defining the line of every drape.</p></article>
-    <article class="part reveal" style="--d:.2s"><span class="num">III</span><h3>Zameen</h3><p>The field of the saree: knotted, dyed, printed or woven, each in its own tradition.</p></article>
-    <article class="part reveal" style="--d:.3s"><span class="num">IV</span><h3>Buta</h3><p>The motifs — peacock, paisley, lotus — repeated by hand across six metres of cloth.</p></article>
-  </div>
+  <div class="anatomy" id="anatomyGrid"></div>
 </section>
 
-<!-- HERITAGE -->
+<!-- HERITAGE / STORY -->
 <section class="heritage" id="heritage">
   <div class="heritage-pattern" aria-hidden="true">
     <svg width="100%" height="100%"><rect width="100%" height="100%" fill="url(#jaali)" style="color:#e6c883"/></svg>
@@ -190,97 +178,57 @@
       <div class="h-arch a3"><div id="hArt3"></div></div>
     </div>
     <div class="heritage-copy reveal">
-      <span class="deva">विरासत</span>
-      <p class="eyebrow light">Our Heritage</p>
-      <h2>A courtly legacy, <em>draped by hand</em></h2>
-      <p>For centuries the royal ateliers of Marwar, Mewar and Amber dressed queens in cloth that took months to complete. Their weavers, dyers and printers passed every technique from parent to child.</p>
-      <p>Kridia works directly with those families, paying fairly and documenting every maker, so the saree you wear arrives with the name of the hands that made it.</p>
-      <ul class="pillars">
-        <li><svg viewBox="0 0 100 60"><use href="#lotus"/></svg><div><h4>Hereditary craft</h4><span>Woven, knotted and printed by families practising for generations.</span></div></li>
-        <li><svg viewBox="0 0 100 60"><use href="#lotus"/></svg><div><h4>Pure materials</h4><span>Silk, cotton, real zari and natural dyes, never blends.</span></div></li>
-        <li><svg viewBox="0 0 100 60"><use href="#lotus"/></svg><div><h4>Signed by the maker</h4><span>Each saree carries its artisan’s name and story.</span></div></li>
-      </ul>
-      <a href="#artisans" class="btn btn-gold">Meet the Weavers</a>
+      <span class="deva" data-s="heritage.deva">विरासत</span>
+      <p class="eyebrow light" data-s="heritage.eyebrow">Our Story</p>
+      <h2 id="heritageTitle">A bridal legacy, <em>crafted by hand</em></h2>
+      <p data-s="heritage.p1">Kridia was created for the moment a bride walks in and the room goes quiet. Every piece is designed around the occasion, with a deep love for craft and detail.</p>
+      <p data-s="heritage.p2">We work closely with skilled artisans, paying fairly and documenting every maker, so the piece you wear arrives with the story of the hands that made it.</p>
+      <ul class="pillars" id="heritagePillars"></ul>
+      <a href="#artisans" class="btn btn-gold" data-s="heritage.button" data-show-if="artisans" hidden>Meet the Artisans</a>
     </div>
   </div>
 </section>
 
 <!-- ARTISANS -->
-<section class="section" id="artisans">
+<section class="section" id="artisans" data-show-if="artisans" hidden>
   <header class="section-head reveal">
-    <span class="deva">कारीगर</span>
-    <p class="eyebrow">The Hands Behind Kridia</p>
-    <h2>Master weavers of Rajasthan</h2>
+    <span class="deva" data-s="artisans.deva">कारीगर</span>
+    <p class="eyebrow" data-s="artisans.eyebrow">The Hands Behind Kridia</p>
+    <h2 data-s="artisans.title">Master artisans</h2>
     <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
   </header>
-  <div class="artisans">
-    <article class="artisan reveal">
-      <div class="portrait"><span>S</span></div>
-      <h3>Salma Khatri</h3>
-      <p class="craft">Bandhani · Jodhpur</p>
-      <p>Her family ties up to 12,000 knots in a single saree, each dot lifted by fingernail alone.</p>
-    </article>
-    <article class="artisan reveal" style="--d:.1s">
-      <div class="portrait"><span>K</span></div>
-      <h3>Kailash Ansari</h3>
-      <p class="craft">Kota Doria · Kaithoon</p>
-      <p>A third-generation weaver whose silk-and-cotton khat squares are so airy they float.</p>
-    </article>
-    <article class="artisan reveal" style="--d:.2s">
-      <div class="portrait"><span>R</span></div>
-      <h3>Ramesh Chhipa</h3>
-      <p class="craft">Block Print · Bagru</p>
-      <p>Carves teak blocks and stamps each metre in mud-resist and indigo, one repeat at a time.</p>
-    </article>
-  </div>
+  <div class="artisans" id="artisanGrid"></div>
 </section>
 
-<section class="quote-band">
+<!-- REVIEWS -->
+<section class="quote-band" data-show-if="reviews" hidden>
   <div class="quote-arch reveal">
     <svg class="q-lotus" viewBox="0 0 100 60"><use href="#lotus"/></svg>
-    <blockquote>“Draped in my Kridia Bandhani, I felt like I was carrying a small palace — warm, golden and quietly regal.”</blockquote>
-    <cite>— Ananya Rathore, Udaipur</cite>
+    <blockquote id="qText"></blockquote>
+    <cite id="qCite"></cite>
+    <div class="q-dots" id="qDots"></div>
   </div>
 </section>
 
 <!-- JOURNAL -->
-<section class="section section-sand" id="journal">
+<section class="section section-sand" id="journal" data-show-if="journal" hidden>
   <header class="section-head reveal">
-    <span class="deva">पत्रिका</span>
-    <p class="eyebrow">The Journal</p>
-    <h2>Stories from the desert looms</h2>
+    <span class="deva" data-s="journal.deva">पत्रिका</span>
+    <p class="eyebrow" data-s="journal.eyebrow">The Journal</p>
+    <h2 data-s="journal.title">Stories from the atelier</h2>
     <div class="ornament"><svg viewBox="0 0 100 60"><use href="#lotus"/></svg></div>
   </header>
-  <div class="journal">
-    <article class="post reveal">
-      <div class="post-img"><div id="jArt1"></div></div>
-      <span class="tag">Craft</span>
-      <h3>The 12,000 knots of a Bandhani saree</h3>
-      <a href="#journal">Read story →</a>
-    </article>
-    <article class="post reveal" style="--d:.1s">
-      <div class="post-img"><div id="jArt2"></div></div>
-      <span class="tag">Style</span>
-      <h3>Five ways to drape a Leheriya</h3>
-      <a href="#journal">Read story →</a>
-    </article>
-    <article class="post reveal" style="--d:.2s">
-      <div class="post-img"><div id="jArt3"></div></div>
-      <span class="tag">Care</span>
-      <h3>Storing your zari: a guide to keeping gold bright</h3>
-      <a href="#journal">Read story →</a>
-    </article>
-  </div>
+  <div class="journal" id="journalGrid"></div>
 </section>
 
 <section class="newsletter">
   <div class="news-box reveal">
     <svg class="news-lotus" viewBox="0 0 100 60"><use href="#lotus"/></svg>
-    <h2>Enter the Maison</h2>
-    <p>Private previews, weaver stories and first access to limited-edition sarees.</p>
+    <h2 data-s="newsletter.title">Enter the Maison</h2>
+    <p data-s="newsletter.text">Private previews, artisan stories and first access to limited-edition bridal pieces.</p>
     <form id="newsForm" class="news-form" novalidate>
-      <input type="email" id="newsEmail" placeholder="Your email address" aria-label="Email address" required>
-      <button type="submit" class="btn btn-gold">Subscribe</button>
+      <input type="email" id="newsEmail" placeholder="Your email address" data-s-ph="newsletter.placeholder" aria-label="Email address" required>
+      <button type="submit" class="btn btn-gold" data-s="newsletter.button">Subscribe</button>
     </form>
     <p class="news-msg" id="newsMsg" role="status"></p>
   </div>
@@ -292,25 +240,25 @@
   <div class="footer-scallop" aria-hidden="true"><svg width="100%" height="14"><rect width="100%" height="14" fill="url(#scallop)" style="color:#b8893b"/></svg></div>
   <div class="footer-grid">
     <div class="f-brand">
-      <span class="brand-name">Kridia</span>
-      <p>Rajasthani sarees, woven in sandstone and finished in gold.</p>
+      <span class="brand-name" data-s="brand.name">Kridia</span>
+      <p data-s="footer.tagline">Luxury bridal wear, crafted in gold and ivory.</p>
     </div>
     <div>
       <h4>Shop</h4>
-      <a href="#collections">Weaves</a><a href="#sarees">All Sarees</a><a href="#sarees">Bridal</a><a href="#sarees">New Arrivals</a>
+      <a href="#collections" data-show-if="categories">Collections</a><a href="#bridal">All Bridal Wear</a>
     </div>
     <div>
       <h4>Maison</h4>
-      <a href="#heritage">Our Heritage</a><a href="#artisans">Weavers</a><a href="#journal">Journal</a><a href="#top">Contact</a>
+      <a href="#heritage">Our Story</a><a href="#artisans" data-show-if="artisans">Artisans</a><a href="#journal" data-show-if="journal">Journal</a><a href="#top">Contact</a>
     </div>
     <div>
       <h4>Visit</h4>
-      <p>Kridia Haveli<br>Clock Tower Lane<br>Jodhpur, Rajasthan 342001</p>
+      <p data-s-lines="footer.address">Kridia Atelier<br>Visits by appointment</p>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Kridia. All rights reserved.</span>
-    <span>Made with devotion in Rajasthan</span>
+    <span data-s="footer.rights">© 2026 Kridia. All rights reserved.</span>
+    <span data-s="footer.credit">Made with devotion</span>
   </div>
 </footer>
 
@@ -320,7 +268,7 @@
   <div class="drawer-body" id="cartItems"></div>
   <div class="drawer-foot">
     <div class="total"><span>Subtotal</span><strong id="cartTotal">₹0</strong></div>
-    <p class="note">Insured shipping, fall &amp; pico included.</p>
+    <p class="note" data-s="cart.note">Insured shipping included.</p>
     <button class="btn btn-gold full" id="checkoutBtn">Proceed to Checkout</button>
   </div>
 </aside>
@@ -379,9 +327,20 @@
   </div>
 </div>
 
+<!-- JOURNAL STORY -->
+<div class="auth-modal story-modal" id="storyModal" role="dialog" aria-modal="true" aria-labelledby="storyTitle" aria-hidden="true">
+  <button class="auth-close" id="storyClose" aria-label="Close">✕</button>
+  <svg class="auth-lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus"/></svg>
+  <span class="tag" id="storyTag"></span>
+  <h2 id="storyTitle"></h2>
+  <div class="story-img" id="storyImg"></div>
+  <div class="story-body" id="storyBody"></div>
+</div>
+
 <div class="toast" id="toast" role="status"></div>
 
 <script src="firebase-config.js"></script>
+<script src="common.js"></script>
 <script src="script.js"></script>
 <script src="auth.js"></script>
 </body>

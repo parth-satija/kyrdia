@@ -1,0 +1,12 @@
+{
+  "name": "kridia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kridia bridal wear storefront with a local JSON-backed admin",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

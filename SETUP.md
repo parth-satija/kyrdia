@@ -1,4 +1,29 @@
-# Kridia — Firebase setup (Sign in + Firestore backend)
+# Kridia — Admin, content & Firebase setup
+
+## Admin page, content and images
+
+Run `node server.js`, then open http://localhost:3000.
+
+**Signing in to the admin:** click the account icon, type `Admin` in the **Email** field, enter the admin password, and press Sign in. You are taken to `/admin.html`. The page and its API only respond to a signed-in admin session (HttpOnly cookie, 8 hours, login locks for 15 minutes after 5 wrong tries). The first-run password is `123o123o123` — **change it under Admin → Security**. It is stored only as a salted scrypt hash in `data/admin-auth.json` (git-ignored). To reset it, delete that file and restart the server.
+
+**What you can manage:** Listings (multiple images, details table, maker, sold-out/visibility), Categories, Artisans, Reviews, Journal stories, all website text (hero, headings, anatomy cards, our story, newsletter, footer…), and the Image library.
+
+**Where things are stored**
+
+| Path | Contents |
+|---|---|
+| `data/listings.json`, `categories.json`, `artisans.json`, `reviews.json`, `journal.json` | Each collection (`{ nextId, items: [...] }`) |
+| `data/settings.json` | Website text and the hero / story images |
+| `images/` | Every uploaded image (JPG, PNG, WebP, GIF, AVIF, up to 15 MB; large photos are resized in the browser) |
+| `data/admin-auth.json` | Hashed admin password |
+
+Each listing has its own details page: `listing.html?id=<id>`.
+
+Notes: the server listens on `127.0.0.1` only by default (set `HOST=0.0.0.0` to expose it, ideally behind HTTPS). Firebase Hosting serves static files only, so the admin and JSON storage need `node server.js` (or any Node host) rather than `firebase deploy`. Sign-in, bag sync and orders still use Firebase as described below.
+
+---
+
+# Firebase setup (Sign in + Firestore backend)
 
 Everything runs in the browser with the Firebase web SDK loaded from Google's CDN.
 No npm install or build step is needed to run the site.
@@ -75,14 +100,13 @@ firebase deploy --only firestore:rules
 ```
 
 ### 6. Run it locally
-Firebase Auth does not work from `file://`, so serve the folder over HTTP:
+The site now runs on its own small Node server (no `npm install` needed, Node 16+). It also stores your content and images, so use it instead of `npx serve`:
 
 ```bash
 cd D:\kyrdia
-npx serve .
-# or:  python -m http.server 5500
+node server.js
 ```
-Open the printed URL (e.g. http://localhost:3000 or http://localhost:5500).
+Open http://localhost:3000 (change the port with `PORT=3001 node server.js`).
 
 ### 7. Test checklist
 1. Click the person icon → **Create account** → you should see your initial in the header.

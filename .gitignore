@@ -1,0 +1,4 @@
+node_modules/
+# Hashed admin password (never commit)
+data/admin-auth.json
+*.tmp
