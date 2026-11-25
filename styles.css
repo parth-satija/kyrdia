@@ -64,6 +64,7 @@ em { font-style:italic; color:var(--terracotta); }
 .brand-arch { width:28px; height:32px; margin-bottom:-2px; }
 .brand-name { font-family:var(--serif); font-size:2.1rem; font-weight:600; letter-spacing:.28em; padding-left:.28em; color:var(--espresso); }
 .brand-sub { font-size:.55rem; letter-spacing:.4em; text-transform:uppercase; color:var(--gold-dk); margin-top:.35rem; }
+.brand-logo { display:block; width:156px; height:auto; }
 
 .cart-btn { position:relative; display:flex; color:var(--umber); transition:transform .3s var(--ease); }
 .cart-btn:hover { transform:scale(1.1); }
@@ -376,7 +377,7 @@ em { font-style:italic; color:var(--terracotta); }
 @media (max-width:560px) {
   .products { gap:1.6rem 1rem; }
   .cat { flex-basis:68vw; }
-  .brand-name { font-size:1.6rem; }
+  .brand-logo { width:124px; }
   .hero-stats { gap:1.4rem; }
   .hero-badge { width:90px; height:90px; font-size:.5rem; }
   .p-add { opacity:1; transform:translate(-50%,0); padding:.5rem .9rem; font-size:.56rem; bottom:10px; }

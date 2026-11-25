@@ -1,0 +1,129 @@
+/* =========================================================
+   KRIDIA — Checkout page (bill · delivery · UPI payment)
+   Builds on the tokens in styles.css
+   ========================================================= */
+
+.co { max-width:1080px; margin:0 auto; padding:2.5rem 1.5rem clamp(4rem,8vw,7rem); }
+.co-head { text-align:center; margin-bottom:2.2rem; }
+.co-head h1 { font-size:clamp(2.2rem,4vw,3.2rem); margin:.5rem 0 1.4rem; }
+
+/* progress */
+.steps { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:.6rem 0; }
+.step { display:flex; align-items:center; gap:.6rem; font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-dk); opacity:.6; }
+.step b { width:28px; height:28px; border-radius:50%; border:1px solid var(--gold); display:grid; place-items:center; font-family:var(--serif); font-size:1rem; font-weight:600; letter-spacing:0; }
+.step + .step::before { content:''; width:clamp(18px,5vw,48px); height:1px; background:rgba(184,137,59,.55); margin:0 .8rem; }
+.step.on { opacity:1; color:var(--espresso); }
+.step.on b { background:var(--umber); color:var(--gold-lt); border-color:var(--umber); }
+.step.done { opacity:1; }
+.step.done b { background:var(--goldgrad); color:var(--espresso); border-color:var(--gold); }
+
+/* layout */
+.co-grid { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,.8fr); gap:2rem; align-items:start; }
+.co-grid.single { grid-template-columns:minmax(0,760px); justify-content:center; }
+.co-stack { display:grid; gap:1.4rem; }
+.co-card { position:relative; background:#fff9ec; border:1px solid rgba(184,137,59,.45); border-radius:22px; padding:2rem; box-shadow:0 24px 40px -30px rgba(90,47,27,.5); }
+.co-card h2 { font-size:1.8rem; margin-bottom:1rem; }
+.co-side { padding:1.5rem 1.6rem; }
+.co-side h2 { font-size:1.45rem; margin-bottom:.8rem; }
+.co-lead { color:var(--umber); margin:-.4rem 0 1.4rem; font-size:.95rem; }
+.co-fine { margin-top:1rem; font-size:.78rem; color:var(--umber); opacity:.8; text-align:center; }
+.co-actions { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; margin-top:1.6rem; }
+.co-actions .btn[disabled], .btn[disabled] { opacity:.5; pointer-events:none; }
+
+/* bill */
+.bill-lines { margin-bottom:.4rem; }
+.bill-line { display:grid; grid-template-columns:72px 1fr auto; gap:1rem; align-items:center; padding:1rem 0; border-bottom:1px solid rgba(184,137,59,.28); }
+.bill-thumb { width:72px; height:90px; border-radius:999px 999px 4px 4px; overflow:hidden; border:2px solid var(--gold); background:var(--cream); }
+.bill-thumb svg, .bill-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.bill-info h3 { font-size:1.3rem; }
+.bill-info h3 a:hover { color:var(--terracotta); }
+.bill-info small { display:block; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-dk); }
+.bill-info span { font-size:.86rem; color:var(--umber); }
+.bill-amt { font-family:var(--serif); font-size:1.3rem; font-weight:600; color:var(--terracotta); }
+.sum-lines li { display:flex; justify-content:space-between; gap:1rem; padding:.45rem 0; font-size:.92rem; color:var(--umber); }
+.sum-lines small { opacity:.7; }
+.sum-lines strong { font-family:var(--serif); font-size:1.1rem; font-weight:600; color:var(--espresso); white-space:nowrap; }
+.sum-row { display:flex; justify-content:space-between; padding:.55rem 0 0; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--umber); }
+.sum-total { display:flex; justify-content:space-between; align-items:baseline; margin-top:.9rem; padding-top:1rem; border-top:1px solid rgba(184,137,59,.45); font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; }
+.sum-total strong { font-family:var(--serif); font-size:2rem; letter-spacing:0; color:var(--espresso); }
+
+/* notices */
+.co-alert { margin-top:1.2rem; padding:1rem 1.2rem; border-radius:14px; border:1px solid var(--gold); background:#fff4d6; font-size:.9rem; color:var(--umber); }
+.co-alert p { margin-top:.4rem; }
+.co-alert.bad { background:#fbe5e1; border-color:#d97b6f; color:#7a1d1d; margin:0 0 1.4rem; }
+.co-alert .call-us { margin-top:.6rem; text-align:left; }
+
+/* form */
+.co-fields { display:grid; grid-template-columns:1fr 1fr; gap:.2rem 1rem; }
+.co-field { display:block; margin-bottom:.9rem; text-align:left; }
+.co-field.wide { grid-column:1/-1; }
+.co-field > span { display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-dk); margin:0 0 .35rem 1.1rem; }
+.co-field input, .co-field select, .co-field textarea { width:100%; padding:.85rem 1.2rem; font:inherit; font-size:.95rem; color:var(--ink); background:#fffdf6; border:1px solid rgba(184,137,59,.55); border-radius:999px; outline:none; transition:border-color .3s, box-shadow .3s; appearance:none; -webkit-appearance:none; }
+.co-field textarea { border-radius:22px; resize:vertical; min-height:84px; }
+.co-field select { background-image:linear-gradient(45deg,transparent 50%,var(--gold-dk) 50%),linear-gradient(135deg,var(--gold-dk) 50%,transparent 50%); background-position:calc(100% - 22px) 52%,calc(100% - 16px) 52%; background-size:6px 6px,6px 6px; background-repeat:no-repeat; padding-right:2.6rem; }
+.co-field input:focus, .co-field select:focus, .co-field textarea:focus { border-color:var(--gold-dk); box-shadow:0 0 0 3px rgba(184,137,59,.22); }
+.co-field input[readonly] { opacity:.7; background:var(--cream); cursor:default; }
+.co-msg { min-height:1.3rem; margin:.2rem 0 0; font-size:.88rem; color:#a3281f; }
+
+/* states (empty, sign-in, submitted, approved) */
+.co-state { text-align:center; padding:2.6rem 2rem; }
+.co-state p { color:var(--umber); max-width:34rem; margin:0 auto 1.4rem; }
+.co-state .eyebrow { display:block; margin-bottom:.4rem; }
+.co-state h2 { margin-bottom:.8rem; }
+.state-lotus { width:56px; height:34px; margin:0 auto 1rem; color:var(--gold); }
+.state-mark { width:76px; height:76px; margin:0 auto 1.2rem; border-radius:50%; background:var(--goldgrad); color:var(--espresso); display:grid; place-items:center; box-shadow:0 0 0 5px #fff9ec,0 0 0 6px var(--gold); }
+.state-mark svg { width:38px; height:38px; }
+.co-state.ok { border-color:#2f6b3d; }
+.co-state .track { padding:.8rem 1.2rem; border:1px dashed var(--gold); border-radius:14px; background:#fffdf6; color:var(--espresso); word-break:break-word; }
+.co-state .track span { display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-dk); margin-bottom:.2rem; }
+
+/* payment card */
+.co-pay { text-align:center; padding-top:2.2rem; }
+.co-pay .eyebrow { display:block; }
+.pay-amount { font-family:var(--serif); font-size:clamp(2.4rem,6vw,3.2rem); font-weight:600; color:var(--terracotta); line-height:1.1; margin:.3rem 0 1.2rem; }
+.qr-frame { width:min(270px,100%); aspect-ratio:1; margin:0 auto; padding:7px; border-radius:20px; background:var(--goldgrad); box-shadow:0 18px 30px -16px rgba(90,47,27,.55); }
+.qr-frame svg { width:100%; height:100%; display:block; border-radius:14px; background:#fff; }
+.qr-frame.failed { aspect-ratio:auto; padding:1.2rem; background:#fffdf6; border:1px dashed var(--gold); box-shadow:none; font-size:.88rem; color:var(--umber); }
+.qr-hint { margin:1rem auto 1.1rem; max-width:22rem; font-size:.88rem; color:var(--umber); }
+.upi-open { display:none; margin-bottom:1.1rem; }
+body.qr-failed .upi-open { display:inline-block; }
+@media (hover:none) and (pointer:coarse) { .upi-open { display:inline-block; } }
+.upi-id { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:.4rem .8rem; padding:.7rem 1rem .7rem 1.4rem; border:1px dashed var(--gold); border-radius:999px; background:#fffdf6; max-width:100%; }
+.upi-id span { font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-dk); }
+.upi-id code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.02rem; color:var(--espresso); word-break:break-all; }
+.upi-id .copy { padding:.4rem 1rem; border-radius:999px; border:1px solid var(--gold); font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--umber); transition:all .3s; }
+.upi-id .copy:hover { background:var(--umber); color:var(--gold-lt); border-color:var(--umber); }
+
+/* call us — sits directly under the UPI ID */
+.call-us { margin-top:1.1rem; text-align:center; font-size:.9rem; color:var(--umber); }
+.call-us span { font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-dk); margin:0 .4rem 0 .6rem; }
+.call-us a { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--terracotta); border-bottom:1px solid transparent; transition:border-color .3s; white-space:nowrap; }
+.call-us a:hover { border-color:var(--terracotta); }
+
+.paid-form { margin-top:1.8rem; padding-top:1.6rem; border-top:1px solid rgba(184,137,59,.4); text-align:left; }
+.paid-form h3 { font-size:1.45rem; text-align:center; margin-bottom:.4rem; }
+.paid-form > p { font-size:.88rem; color:var(--umber); text-align:center; margin-bottom:1.1rem; }
+
+/* side panels */
+.addr { font-size:.95rem; color:var(--umber); line-height:1.6; }
+.addr strong { color:var(--espresso); font-family:var(--serif); font-size:1.15rem; }
+.addr-note { margin-top:.7rem; padding-top:.7rem; border-top:1px solid rgba(184,137,59,.28); font-size:.86rem; color:var(--umber); }
+.co-status { text-align:center; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-dk); }
+.co-status .order-status { margin:0 0 0 .5rem; }
+.track { margin:1rem auto 0; padding:.8rem 1.2rem; max-width:30rem; border:1px dashed var(--gold); border-radius:14px; background:#fffdf6; font-size:.95rem; color:var(--espresso); word-break:break-word; }
+.track span { display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-dk); margin-bottom:.25rem; }
+
+@media (max-width:900px) {
+  .co-grid, .co-grid.single { grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:560px) {
+  .co { padding-inline:1rem; }
+  .co-card { padding:1.4rem 1.2rem; }
+  .co-fields { grid-template-columns:1fr; }
+  .step span { display:none; }
+  .step.on span { display:inline; }
+  .bill-line { grid-template-columns:56px 1fr; }
+  .bill-thumb { width:56px; height:70px; }
+  .bill-amt { grid-column:2; }
+  .co-actions .btn { flex:1 1 100%; text-align:center; }
+}

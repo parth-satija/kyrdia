@@ -12,7 +12,7 @@ const safeImg = p => (typeof p === 'string' && /^data:image\/(?:webp|jpeg|png);b
 const paragraphs = t => String(t || '').split(/\n{2,}/).map(s => s.trim()).filter(Boolean);
 
 /* ---------- Content (filled once the data has loaded) ---------- */
-let SITE = {}, CATS = [], PRODUCTS = [], ARTISANS = [], REVIEWS = [], JOURNAL = [];
+let SITE = {}, CATS = [], PRODUCTS = [], ARTISANS = [], REVIEWS = [], JOURNAL = [], PAYMENT = {};
 const sv = (path, fb = '') => {
   let o = SITE;
   for (const k of path.split('.')) { if (o == null) return fb; o = o[k]; }
@@ -114,6 +114,7 @@ function renderCart() {
   }
   $('#cartCount').textContent = cart.reduce((s, i) => s + i.qty, 0);
   $('#cartTotal').textContent = fmt(cart.reduce((s, i) => s + i.qty * ((byId(i.id) || {}).price || 0), 0));
+  document.dispatchEvent(new Event('kridia:cart'));   // lets the checkout page re-draw the bill
   saveCart();
 }
 function addToCart(id) {
@@ -135,7 +136,10 @@ $('#cartItems').addEventListener('click', e => {
   cart = cart.filter(i => i.qty > 0);
   renderCart();
 });
-$('#checkoutBtn').addEventListener('click', () => toast(cart.length ? 'Checkout coming soon — thank you for choosing Kridia' : 'Your bag is empty'));
+$('#checkoutBtn').addEventListener('click', () => {
+  if (!cart.length) return toast('Your bag is empty');
+  location.href = 'checkout.html';   // auth.js swaps this for a version that asks guests to sign in first
+});
 
 /* ---------- Header / menu ---------- */
 const header = $('.site-header');
@@ -192,6 +196,7 @@ window.kridiaReady = (async () => {
   try {
     const d = await KStore.loadPublic();
     SITE = d.settings || {}; CATS = d.categories || []; PRODUCTS = d.listings || [];
+    PAYMENT = d.payment || {};
     ARTISANS = d.artisans || []; REVIEWS = d.reviews || []; JOURNAL = d.journal || [];
     await resolveImages();
     cart = cart.filter(i => byId(i.id));

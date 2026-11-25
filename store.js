@@ -52,8 +52,11 @@
     const read = n => (n === 'listings'
       ? F.getDocs(F.query(F.collection(db, n), F.where('published', '==', true)))
       : F.getDocs(F.collection(db, n)));
-    const [sSnap, ...snaps] = await Promise.all([F.getDoc(F.doc(db, 'site', 'settings')), ...COLS.map(read)]);
-    const out = { settings: S.cleanSettings(sSnap.exists() ? sSnap.data() : {}, { hasId: () => true }, true) };
+    const [sSnap, pSnap, ...snaps] = await Promise.all([F.getDoc(F.doc(db, 'site', 'settings')), F.getDoc(F.doc(db, 'site', 'payment')), ...COLS.map(read)]);
+    const out = {
+      settings: S.cleanSettings(sSnap.exists() ? sSnap.data() : {}, { hasId: () => true }, true),
+      payment: S.cleanPayment(pSnap.exists() ? pSnap.data() : {}, true)   // UPI ID, payee name, call-us number
+    };
     COLS.forEach((n, i) => {
       out[n] = snaps[i].docs.map(d => d.data()).filter(x => Number.isInteger(x.id)).sort(ord);
     });
@@ -202,12 +205,48 @@
     const { A, F, auth, db } = await fb();
     let m;
 
-    if (url === 'api/admin/schema') return { collections: S.COLLECTIONS, settings: S.SETTINGS_GROUPS };
+    if (url === 'api/admin/schema') return { collections: S.COLLECTIONS, settings: S.SETTINGS_GROUPS, payment: S.PAYMENT_FIELDS };
     if (url === 'api/admin/data') {
       await loadAll();
       return { settings, collections: Object.fromEntries(COLS.map(n => [n, cols[n]])) };
     }
     if (url === 'api/admin/logout') { await A.signOut(auth); return { ok: true }; }
+
+    /* ---- Payments + orders (no need to load the whole catalogue for these) ---- */
+    if (url === 'api/admin/payment') {
+      const pref = F.doc(db, 'site', 'payment');
+      if (method === 'GET') {
+        const s = await F.getDoc(pref);
+        return { payment: S.cleanPayment(s.exists() ? s.data() : {}, true) };
+      }
+      if (method === 'PUT') {
+        const clean = S.cleanPayment(body, false);
+        await F.setDoc(pref, clean);
+        return { payment: clean };
+      }
+    }
+    if (url === 'api/admin/orders' && method === 'GET') {
+      // Every customer's orders live at users/{uid}/orders/{id}; the admin reads them as a collection group.
+      const snap = await F.getDocs(F.collectionGroup(db, 'orders'));
+      const ms = t => (t && t.toMillis ? t.toMillis() : 0);
+      const orders = snap.docs.map(d => {
+        const x = d.data();
+        return { ...x, id: d.id, uid: d.ref.parent.parent.id, createdAt: ms(x.createdAt), paidAt: ms(x.paidAt), reviewedAt: ms(x.reviewedAt) };
+      }).sort((a, b) => b.createdAt - a.createdAt);
+      return { orders };
+    }
+    if ((m = /^api\/admin\/orders\/([^/]+)\/([^/]+)$/.exec(url)) && method === 'PUT') {
+      const status = body && body.status;
+      if (!['awaiting_payment', 'payment_submitted', 'approved', 'rejected', 'shipped', 'delivered'].includes(status)) throw new Error('Unknown order status.');
+      const clean = s => String(s || '').replace(/\s+/g, ' ').trim();
+      const note = status === 'rejected' ? clean(body.note).slice(0, 300) : '';
+      const patch = { status, reviewedAt: F.serverTimestamp(), reviewNote: note };
+      // Courier / tracking details are kept while the order is shipped or delivered, and cleared otherwise.
+      if (status === 'shipped' || status === 'delivered') patch.tracking = clean(body.tracking).slice(0, 200);
+      else patch.tracking = '';
+      await F.updateDoc(F.doc(db, 'users', decodeURIComponent(m[1]), 'orders', decodeURIComponent(m[2])), patch);
+      return { ok: true };
+    }
 
     await loadAll();
 

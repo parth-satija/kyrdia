@@ -219,6 +219,7 @@ function cleanValue(f, raw, ctx) {
       if (f.type === 'text') s = s.replace(/\n+/g, ' ');
       s = s.trim();
       if (s.length > f.max) throw new Error(`“${f.label}” is too long (max ${f.max} characters).`);
+      if (s && f.pattern && !f.pattern.test(s)) throw new Error(f.patternMsg || `“${f.label}” is not valid.`);
       if (f.required && !s) throw new Error(`“${f.label}” is required.`);
       return s;
     }
@@ -297,7 +298,33 @@ function cleanSettings(input, ctx, lenient) {
   return out;
 }
 
+/* ---------- Payment settings (stored in Firestore at site/payment; edited under Admin → Payment settings) ---------- */
+const PAYMENT_FIELDS = [
+  text('upiId', 'UPI ID', {
+    max: 100, placeholder: 'yourname@bank',
+    pattern: /^[A-Za-z0-9][A-Za-z0-9._-]{1,63}@[A-Za-z][A-Za-z0-9.-]{1,63}$/,
+    patternMsg: '“UPI ID” should look like name@bank (letters, numbers, dots, dashes).',
+    help: 'Customers pay to this UPI ID. The QR code on the payment page is generated from it, with the order amount filled in.'
+  }),
+  text('payeeName', 'Name shown in UPI apps', { max: 60, default: 'Kridia', help: 'The payee name customers see when they scan the QR code.' }),
+  text('phone', 'Call-us number', {
+    max: 20, placeholder: '+91 98765 43210',
+    pattern: /^\+?[0-9][0-9 ()-]{5,18}[0-9]$/,
+    patternMsg: '“Call-us number” should contain only digits, spaces, + ( ) and -.',
+    help: 'Shown under the UPI ID on the payment page so customers can call you about their payment.'
+  })
+];
+function cleanPayment(input, lenient) {
+  const out = {};
+  for (const f of PAYMENT_FIELDS) {
+    const raw = (input || {})[f.key];
+    try { out[f.key] = raw === undefined ? defaultFor(f) : cleanValue(f, raw, { hasId: () => false }); }
+    catch (e) { if (!lenient) throw e; out[f.key] = defaultFor(f); }
+  }
+  return out;
+}
+
 const defaultSettings = () => cleanSettings({}, { hasId: () => false }, true);
 
-return { COLLECTIONS, SETTINGS_GROUPS, cleanItem, cleanSettings, defaultSettings, getPath, setPath, isImg };
+return { COLLECTIONS, SETTINGS_GROUPS, PAYMENT_FIELDS, cleanItem, cleanSettings, cleanPayment, defaultSettings, getPath, setPath, isImg };
 });

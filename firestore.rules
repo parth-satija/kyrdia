@@ -19,7 +19,31 @@ service cloud.firestore {
         && request.auth.token.email == 'admin@kridia.in';
     }
 
+    // ---- Shape checks for a new order (see checkout.js) ----
+    function validCustomer(c) {
+      return c is map
+        && c.keys().hasOnly(['name', 'phone', 'email'])
+        && c.keys().hasAll(['name', 'phone', 'email'])
+        && c.name is string && c.name.size() > 0 && c.name.size() <= 100
+        && c.phone is string && c.phone.matches('^[6-9][0-9]{9}$')
+        && c.email is string && c.email.size() <= 200;
+    }
+    function validShipping(s) {
+      return s is map
+        && s.keys().hasOnly(['name', 'phone', 'line1', 'line2', 'city', 'state', 'pin', 'notes'])
+        && s.keys().hasAll(['name', 'phone', 'line1', 'city', 'state', 'pin'])
+        && s.name is string && s.name.size() > 0 && s.name.size() <= 100
+        && s.phone is string && s.phone.matches('^[6-9][0-9]{9}$')
+        && s.line1 is string && s.line1.size() > 0 && s.line1.size() <= 150
+        && s.get('line2', '') is string && s.get('line2', '').size() <= 150
+        && s.city is string && s.city.size() > 0 && s.city.size() <= 80
+        && s.state is string && s.state.size() > 0 && s.state.size() <= 60
+        && s.pin is string && s.pin.matches('^[1-9][0-9]{5}$')
+        && s.get('notes', '') is string && s.get('notes', '').size() <= 300;
+    }
+
     // ---- Website content: anyone can read, only the admin can change ----
+    // (site/payment holds the UPI ID, payee name and call-us number.)
     match /site/{doc} {
       allow read: if true;
       allow write: if isAdmin();
@@ -85,23 +109,63 @@ service cloud.firestore {
 
       allow delete: if false;
 
-      // ---- Orders (immutable once placed) --------------------------------
+      // ---- Orders (UPI payment, verified by hand in the admin page) -------
+      //  - The customer creates an order as 'awaiting_payment' (items, total,
+      //    delivery details). It can never be edited afterwards, except for
+      //    one step: marking it 'payment_submitted' with an optional UTR.
+      //  - Only the admin can approve / reject / ship / deliver (status, reviewedAt, reviewNote, tracking).
       match /orders/{orderId} {
         allow read: if isOwner(uid);
 
         allow create: if isOwner(uid)
-          && request.resource.data.keys().hasOnly(['items', 'total', 'currency', 'status', 'createdAt'])
-          && request.resource.data.status == 'pending'
+          && request.resource.data.keys().hasOnly(['orderNo', 'items', 'total', 'currency', 'status', 'customer', 'shipping', 'createdAt'])
+          && request.resource.data.keys().hasAll(['orderNo', 'items', 'total', 'currency', 'status', 'customer', 'shipping', 'createdAt'])
+          && request.resource.data.orderNo is string
+          && request.resource.data.orderNo.size() >= 6
+          && request.resource.data.orderNo.size() <= 24
+          && request.resource.data.status == 'awaiting_payment'
+          && request.resource.data.currency == 'INR'
           && request.resource.data.items is list
           && request.resource.data.items.size() > 0
           && request.resource.data.items.size() <= 50
           && request.resource.data.total is number
+          && request.resource.data.total > 0
+          && request.resource.data.total < 10000000
+          && validCustomer(request.resource.data.customer)
+          && validShipping(request.resource.data.shipping)
           && request.resource.data.createdAt == request.time;
 
-        // Status changes (paid, shipped, ...) must come from a trusted
-        // backend using the Admin SDK, never from the browser.
-        allow update, delete: if false;
+        allow update: if (
+            // customer: "I've paid" (also lets them resubmit after a rejection)
+            isOwner(uid)
+            && resource.data.status in ['awaiting_payment', 'rejected']
+            && request.resource.data.status == 'payment_submitted'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'utr', 'paidAt'])
+            && request.resource.data.utr is string
+            && (request.resource.data.utr == '' || request.resource.data.utr.matches('^[0-9]{12}$'))
+            && request.resource.data.paidAt == request.time
+          ) || (
+            // admin: verify / reject / undo, then ship / deliver (tracking = courier + tracking number)
+            isAdmin()
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'reviewedAt', 'reviewNote', 'tracking'])
+            && request.resource.data.status in ['awaiting_payment', 'payment_submitted', 'approved', 'rejected', 'shipped', 'delivered']
+            // an order can only be shipped / delivered after its payment was approved
+            && (!(request.resource.data.status in ['shipped', 'delivered'])
+                || resource.data.status in ['approved', 'shipped', 'delivered'])
+            && request.resource.data.reviewedAt == request.time
+            && request.resource.data.reviewNote is string
+            && request.resource.data.reviewNote.size() <= 300
+            && request.resource.data.get('tracking', '') is string
+            && request.resource.data.get('tracking', '').size() <= 200
+          );
+
+        allow delete: if false;
       }
+    }
+
+    // ---- Admin: read every customer's orders at once (collection-group query) ----
+    match /{path=**}/orders/{orderId} {
+      allow read: if isAdmin();
     }
 
     // ---- Newsletter subscribers (write-only from the browser) -----------

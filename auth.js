@@ -216,19 +216,20 @@
           ? o.createdAt.toDate().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
           : '';
         const count = (o.items || []).reduce((s, i) => s + (i.qty || 0), 0);
-        const row = document.createElement('div');
+        const row = document.createElement('a');
+        row.href = 'checkout.html?order=' + encodeURIComponent(d.id);   // opens the payment / status page
         row.className = 'order-row';
         const left = document.createElement('div');
         const t = document.createElement('strong');
         t.textContent = `${count} ${count === 1 ? 'piece' : 'pieces'} · ${fmt(o.total || 0)}`;
         const s = document.createElement('small');
-        s.textContent = (o.items || []).map(i => i.name).join(', ');
+        s.textContent = [o.orderNo, (o.items || []).map(i => i.name).join(', ')].filter(Boolean).join(' · ');
         left.append(t, s);
         const right = document.createElement('div');
         right.className = 'order-meta';
         const st = document.createElement('span');
-        st.className = 'order-status';
-        st.textContent = o.status || 'pending';
+        st.className = 'order-status s-' + (o.status || 'pending');
+        st.textContent = KPay.statusLabel(o.status);
         const dt = document.createElement('small');
         dt.textContent = when;
         right.append(st, dt);
@@ -343,40 +344,24 @@
     }
   }
 
-  /* ---------- Checkout (creates a pending order) ---------- */
+  /* ---------- Checkout: the bag's button opens checkout.html (the order is created there, after delivery details) ---------- */
   function wireCheckout() {
     const old = $('#checkoutBtn');
-    const btn = old.cloneNode(true);   // drops script.js’s “coming soon” handler
+    const btn = old.cloneNode(true);   // drops common.js’s default handler
     old.replaceWith(btn);
     btn.addEventListener('click', async () => {
       if (!cart.length) return toast('Your bag is empty');
       if (!user) {
         closeCart();
         openModal('signin');
-        setMsg('Please sign in to place your order.');
+        setMsg('Please sign in to continue to checkout.');
         return;
       }
+      if (/checkout\.html$/.test(location.pathname)) return closeCart();   // already there; the bill redraws itself
       btn.disabled = true;
-      try {
-        const items = cart.map(i => {
-          const p = byId(i.id);
-          return { id: p.id, name: p.name, price: p.price, qty: i.qty };
-        });
-        const total = items.reduce((s, i) => s + i.price * i.qty, 0);
-        await F.addDoc(F.collection(db, 'users', user.uid, 'orders'), {
-          items, total, currency: 'INR', status: 'pending', createdAt: F.serverTimestamp()
-        });
-        clearTimeout(pushTimer);
-        cart = [];
-        renderCart();
-        closeCart();
-        toast('Order received — we’ll be in touch to confirm');
-      } catch (err) {
-        console.error('Kridia: order failed', err);
-        toast('We couldn’t place your order. Please try again.');
-      } finally {
-        btn.disabled = false;
-      }
+      clearTimeout(pushTimer);
+      await pushCart();   // make sure the saved bag is current before the checkout page restores it
+      location.href = 'checkout.html';
     });
   }
 
@@ -421,6 +406,14 @@
   $('#authSignOut').addEventListener('click', handleSignOut);
   setMode('signin');
 
+  /* ---------- Auth state for other pages (checkout.js listens for this) ---------- */
+  /* Fired once the signed-in user's bag has been merged, or when we know nobody (or the admin) is signed in. */
+  function emitAuth(admin) {
+    const state = { user: admin ? null : user, admin: !!admin };
+    window.KAuth = { state };
+    document.dispatchEvent(new CustomEvent('kridia:auth', { detail: state }));
+  }
+
   /* ---------- Boot ---------- */
   if (!configured) {
     console.warn('Kridia: Firebase isn’t configured yet. Fill in firebase-config.js (see SETUP.md).');
@@ -446,6 +439,7 @@
       A.onAuthStateChanged(auth, async u => {
         if (KStore.isAdminUser(u)) {   // the admin signs in here too, but is not a shopper: no bag/profile sync
           user = null; cloudReady = false; clearTimeout(pushTimer);
+          emitAuth(true);
           renderAccountUI();
           return;
         }
@@ -455,14 +449,16 @@
           prevUid = u.uid;
           try {
             const profile = await ensureProfile(u);
-            if (user && user.uid === u.uid) await syncCartDown(profile);
+            if (user && user.uid === u.uid) { await syncCartDown(profile); emitAuth(); }
           } catch (err) {
             console.error('Kridia: profile/bag sync failed', err);
+            emitAuth();
             toast('Signed in, but we couldn’t sync your bag');
           }
         } else {
           cloudReady = false;
           clearTimeout(pushTimer);
+          emitAuth();
           if (prevUid) { setLocalCart([]); prevUid = null; }  // don’t leave a signed-out user’s bag behind
         }
       });

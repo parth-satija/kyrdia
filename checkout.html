@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Checkout — Kridia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="checkout.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 95V45C20 30 35 25 50 5C65 25 80 30 80 45V95Z' fill='%23b8893b'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="cuspArch" clipPathUnits="objectBoundingBox">
+      <path d="M0,1 V0.44 C0,0.33 0.09,0.26 0.23,0.205 C0.34,0.165 0.42,0.11 0.5,0 C0.58,0.11 0.66,0.165 0.77,0.205 C0.91,0.26 1,0.33 1,0.44 V1 Z"/>
+    </clipPath>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0d596"/>
+      <stop offset=".45" stop-color="#b8893b"/>
+      <stop offset="1" stop-color="#8a5f22"/>
+    </linearGradient>
+    <symbol id="lotus" viewBox="0 0 100 60">
+      <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+        <path d="M50 54C40 44 40 22 50 6C60 22 60 44 50 54Z"/>
+        <path d="M50 54C34 50 24 36 22 18C38 22 48 36 50 54Z"/>
+        <path d="M50 54C66 50 76 36 78 18C62 22 52 36 50 54Z"/>
+        <path d="M50 54C30 56 14 46 6 32C24 32 40 40 50 54Z"/>
+        <path d="M50 54C70 56 86 46 94 32C76 32 60 40 50 54Z"/>
+      </g>
+    </symbol>
+    <pattern id="jaali" width="40" height="40" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M20 2L38 20L20 38L2 20Z"/><circle cx="20" cy="20" r="6"/><path d="M20 14V26M14 20H26"/>
+        <circle cx="0" cy="0" r="4"/><circle cx="40" cy="0" r="4"/><circle cx="0" cy="40" r="4"/><circle cx="40" cy="40" r="4"/>
+      </g>
+    </pattern>
+    <pattern id="scallop" width="24" height="14" patternUnits="userSpaceOnUse">
+      <path d="M0 14C0 6 6 0 12 0C18 0 24 6 24 14" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="announce">
+  <span data-s="announce.a1">Complimentary insured shipping across India</span><i class="dot"></i>
+  <span data-s="announce.a2">Handcrafted · Artisan signed</span><i class="dot hide-sm"></i>
+  <span class="hide-sm" data-s="announce.a3">Made-to-measure bridal fittings</span>
+</div>
+
+<header class="site-header" id="top">
+  <nav class="nav nav-left" aria-label="Primary">
+    <a href="index.html#collections" data-show-if="categories">Collections</a>
+    <a href="index.html#bridal">Bridal Wear</a>
+    <a href="index.html#anatomy" data-show-if="anatomy">The Details</a>
+  </nav>
+
+  <a href="index.html" class="brand" aria-label="Kridia home">
+    <svg class="brand-arch" viewBox="0 0 60 70" aria-hidden="true">
+      <path d="M4 68V32C4 22 14 17 22 12C27 9 29 5 30 1C31 5 33 9 38 12C46 17 56 22 56 32V68" fill="none" stroke="url(#goldGrad)" stroke-width="2"/>
+      <path d="M12 68V34C12 27 19 23 25 19C28 17 29.5 14 30 11C30.5 14 32 17 35 19C41 23 48 27 48 34V68" fill="none" stroke="url(#goldGrad)" stroke-width="1"/>
+    </svg>
+    <span class="brand-name" data-s="brand.name">Kridia</span>
+    <span class="brand-sub" data-s="brand.sub">Bridal Couture</span>
+  </a>
+
+  <nav class="nav nav-right" aria-label="Secondary">
+    <a href="index.html#artisans" data-show-if="artisans">Artisans</a>
+    <a href="index.html#journal" data-show-if="journal">Journal</a>
+    <button class="account-btn" id="acctOpen" aria-label="Sign in">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-4 4-6 7.5-6s6.7 2 7.5 6"/></svg>
+      <span class="acct-initial" aria-hidden="true"></span>
+    </button>
+    <button class="cart-btn" id="cartOpen" aria-label="Open cart">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </nav>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#collections" data-show-if="categories">Collections</a>
+  <a href="index.html#bridal">Bridal Wear</a>
+  <a href="index.html#anatomy" data-show-if="anatomy">The Details</a>
+  <a href="index.html#artisans" data-show-if="artisans">Artisans</a>
+  <a href="index.html#journal" data-show-if="journal">Journal</a>
+</div>
+
+<main>
+  <div class="co" id="co">
+    <header class="co-head">
+      <p class="eyebrow">Secure checkout</p>
+      <h1>Checkout</h1>
+      <ol class="steps" id="steps" aria-label="Checkout progress" hidden></ol>
+    </header>
+    <div id="coBody"><p class="empty-note">Loading…</p></div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-scallop" aria-hidden="true"><svg width="100%" height="14"><rect width="100%" height="14" fill="url(#scallop)" style="color:#b8893b"/></svg></div>
+  <div class="footer-grid">
+    <div class="f-brand">
+      <span class="brand-name" data-s="brand.name">Kridia</span>
+      <p data-s="footer.tagline">Luxury bridal wear, crafted in gold and ivory.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="index.html#collections" data-show-if="categories">Collections</a><a href="index.html#bridal">All Bridal Wear</a>
+    </div>
+    <div>
+      <h4>Maison</h4>
+      <a href="index.html#heritage">Our Story</a><a href="index.html#artisans" data-show-if="artisans">Artisans</a><a href="index.html#journal" data-show-if="journal">Journal</a><a href="#top">Contact</a>
+    </div>
+    <div>
+      <h4>Visit</h4>
+      <p data-s-lines="footer.address">Kridia Atelier<br>Visits by appointment</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-s="footer.rights">© 2026 Kridia. All rights reserved.</span>
+    <span data-s="footer.credit">Made with devotion</span>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Shopping cart" aria-hidden="true">
+  <div class="drawer-head"><h3>Your Bag</h3><button id="cartClose" aria-label="Close cart">✕</button></div>
+  <div class="drawer-body" id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="total"><span>Subtotal</span><strong id="cartTotal">₹0</strong></div>
+    <p class="note" data-s="cart.note">Insured shipping included.</p>
+    <button class="btn btn-gold full" id="checkoutBtn">Proceed to Checkout</button>
+  </div>
+</aside>
+
+<!-- ACCOUNT / SIGN IN -->
+<div class="auth-overlay" id="authOverlay"></div>
+<div class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" aria-hidden="true">
+  <button class="auth-close" id="authClose" aria-label="Close">✕</button>
+  <svg class="auth-lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus"/></svg>
+
+  <div id="authGuest">
+    <h2 id="authTitle">Welcome back</h2>
+    <p class="auth-sub" id="authSub">Sign in to open your saved bag and your orders.</p>
+
+    <div class="auth-tabs" role="tablist">
+      <button type="button" class="auth-tab active" data-mode="signin" role="tab" aria-selected="true">Sign in</button>
+      <button type="button" class="auth-tab" data-mode="signup" role="tab" aria-selected="false">Create account</button>
+    </div>
+
+    <form id="authForm" novalidate>
+      <label class="auth-field" id="authNameField" hidden>
+        <span>Your name</span>
+        <input type="text" id="authName" autocomplete="name" maxlength="100">
+      </label>
+      <label class="auth-field">
+        <span>Email</span>
+        <input type="email" id="authEmail" autocomplete="email" inputmode="email">
+      </label>
+      <label class="auth-field">
+        <span>Password</span>
+        <input type="password" id="authPass" autocomplete="current-password">
+      </label>
+      <button type="button" class="auth-link" id="authForgot">Forgot password?</button>
+      <p class="auth-msg" id="authMsg" role="alert"></p>
+      <button type="submit" class="btn btn-gold" id="authSubmit">Sign in</button>
+    </form>
+
+    <div class="auth-divider">or</div>
+    <button type="button" class="btn-google" id="authGoogle">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+  </div>
+
+  <div id="authUser" hidden>
+    <div class="auth-avatar" id="authAvatar"></div>
+    <h2 id="authUserName">Welcome</h2>
+    <p class="auth-user-email" id="authUserEmail"></p>
+    <div class="auth-orders">
+      <h3>Your orders</h3>
+      <div id="orderList"></div>
+    </div>
+    <button type="button" class="btn btn-ghost" id="authSignOut">Sign out</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="firebase-config.js"></script>
+<script src="schema.js"></script>
+<script src="store.js"></script>
+<script src="common.js"></script>
+<script src="payment.js"></script>
+<!-- QR code generator: pinned version + integrity hash, so a tampered file simply won't run -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" integrity="sha384-8FWZA6BGMXhsfO+BLtrJK0We6gg5o1JyO8xQm6peWDEUs17ACA5ziE/NIAkl9z2k" crossorigin="anonymous"></script>
+<script src="checkout.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>

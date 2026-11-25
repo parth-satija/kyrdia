@@ -70,6 +70,14 @@
 .order-row strong { display:block; font-family:var(--serif); font-size:1.1rem; font-weight:600; color:var(--espresso); }
 .order-row small { display:block; font-size:.74rem; opacity:.75; line-height:1.4; }
 .order-meta { text-align:right; flex:none; }
+a.order-row { color:inherit; text-decoration:none; transition:background .3s; }
+a.order-row:hover { background:rgba(184,137,59,.12); }
+.order-status.s-awaiting_payment { background:var(--terracotta); color:#fff; }
+.order-status.s-payment_submitted { background:var(--gold-dk); color:#fff; }
+.order-status.s-approved { background:#2f6b3d; color:#eaf7ec; }
+.order-status.s-shipped { background:#1f5a7a; color:#e8f4fa; }
+.order-status.s-delivered { background:#1d4a2a; color:#eaf7ec; }
+.order-status.s-rejected { background:#a3281f; color:#fff; }
 .order-status { display:inline-block; padding:.12rem .7rem; border-radius:999px; background:var(--espresso); color:var(--gold-lt); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; margin-bottom:.2rem; }
 
 @media (max-width:900px) {

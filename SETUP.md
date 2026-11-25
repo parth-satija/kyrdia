@@ -168,7 +168,13 @@ Then add your live domain to **Authentication → Settings → Authorized domain
 | Google pop-up blocked | Allow pop-ups for the site |
 | Nothing works when opening `index.html` by double-click | Serve over HTTP (step 6) |
 
-## Important: before taking real money
+## Payments (UPI QR, verified by hand)
+
+There is no payment gateway. Setup: Admin → **Payment settings** → enter your UPI ID, payee name and call-us number (publish the latest `firestore.rules` first).
+
+Order flow: `awaiting_payment` → customer taps "I've paid" → `payment_submitted` → admin checks the money in their UPI/bank app and approves (`approved`) → admin marks `shipped` (optional courier/tracking text, shown to the customer) → `delivered`. Rejected orders can be paid/submitted again. Admin → Orders also has search, CSV export and a printable packing slip.
+
+## Important: older note about taking real money (applies to the gateway-based approach)
 
 This is a solid account + data foundation, but **checkout is not payment-ready**:
 
